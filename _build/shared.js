@@ -209,6 +209,17 @@
   document.querySelector(".to-top")?.addEventListener("click", () => {
     if (lenis) lenis.scrollTo(0); else window.scrollTo({ top:0, behavior:"smooth" });
   });
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const id = a.getAttribute("href");
+    if (!id || id === "#") return;
+    const target = document.querySelector(id);
+    if (!target) return;
+    e.preventDefault();
+    if (lenis) lenis.scrollTo(target, { offset: -24 });
+    else target.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
   window.addEventListener("scroll", () => {
     document.querySelector(".to-top")?.classList.toggle("show", window.scrollY > 600);
   }, { passive: true });
@@ -406,10 +417,14 @@
     const railTween = gsap.to(rail, {
       x: () => -(rail.scrollWidth - innerWidth),
       ease: "none",
+      force3D: true,
+      modifiers: {
+        x: (v) => `${Math.round(parseFloat(v))}px`
+      },
       scrollTrigger: {
         trigger: ".rail-pin",
         pin: true,
-        scrub: 1,
+        scrub: true,
         invalidateOnRefresh: true,
         anticipatePin: 1,
         end: () => "+=" + Math.max(rail.scrollWidth - innerWidth, innerWidth)
@@ -430,13 +445,13 @@
       });
       const photo = p.querySelector(".rail-visual img");
       if (photo) {
-        gsap.fromTo(photo, { scale: 1.12 }, {
-          scale: 1.04, ease: "none",
+        gsap.fromTo(photo, { scale: 1.08 }, {
+          scale: 1.02, ease: "none", force3D: true,
           scrollTrigger: {
             trigger: p,
             containerAnimation: railTween,
-            start: "left 100%",
-            end: "left -20%",
+            start: "left 95%",
+            end: "left 5%",
             scrub: true
           }
         });
@@ -1063,6 +1078,43 @@
     });
   })();
 
+  /* About statements */
+  (function aboutValues(){
+    const band = document.querySelector("[data-about-values]");
+    if (!band) return;
+    const tabs = Array.prototype.slice.call(band.querySelectorAll(".stmt"));
+    const imgs = Array.prototype.slice.call(band.querySelectorAll("[data-stmt-img]"));
+    const title = band.querySelector("[data-stmt-title]");
+    const copy = band.querySelector("[data-stmt-copy]");
+    const activate = (idx) => {
+      tabs.forEach((tab, i) => {
+        const on = i === idx;
+        tab.classList.toggle("is-on", on);
+        tab.setAttribute("aria-selected", on ? "true" : "false");
+        tab.tabIndex = on ? 0 : -1;
+      });
+      imgs.forEach((img, i) => img.classList.toggle("is-on", i === idx));
+      const active = tabs[idx];
+      if (active && title) title.textContent = active.querySelector(".stmt-title")?.textContent || "";
+      if (active && copy) copy.textContent = active.querySelector(".stmt-body")?.textContent || "";
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener("click", () => activate(i));
+      tab.addEventListener("keydown", (e) => {
+        if (e.key !== "ArrowDown" && e.key !== "ArrowUp" && e.key !== "Home" && e.key !== "End") return;
+        e.preventDefault();
+        let next = i;
+        if (e.key === "ArrowDown") next = (i + 1) % tabs.length;
+        if (e.key === "ArrowUp") next = (i - 1 + tabs.length) % tabs.length;
+        if (e.key === "Home") next = 0;
+        if (e.key === "End") next = tabs.length - 1;
+        activate(next);
+        tabs[next].focus();
+      });
+    });
+    activate(0);
+  })();
+
   /* Enquiry band */
   (function quoteBand(){
     const band = document.querySelector("[data-quote-band]");
@@ -1253,15 +1305,13 @@
       return;
     }
     const tl = gsap.timeline({ defaults:{ ease:"power3.out" }, onComplete: () => ScrollTrigger.refresh() });
-    tl.fromTo(".intro-line", { width:0 }, { width:"100%", duration:1.1 })
-      .to(".intro-line", { autoAlpha: 0, duration: 0.45 }, "+=0.15");
     if (document.querySelector(".hero-film")) {
-      tl.from(".hero-film .hero-lead", { y:16, opacity:0, duration:0.5 }, "-=0.4")
+      tl.from(".hero-film .hero-lead", { y:16, opacity:0, duration:0.5 })
         .from(".hero-film .hero-line > span", { yPercent:110, opacity:0, stagger:0.1, duration:0.85 }, "-=0.2")
         .from(".hero-film .hero-sub", { y:18, opacity:0, duration:0.55 }, "-=0.45")
         .from(".hero-film .hero-aside, .hero-film .hero-actions", { y:20, opacity:0, stagger:0.08, duration:0.6 }, "-=0.35");
     } else {
-      tl.from(".hero-copy .kicker", { y:20, opacity:0, duration:0.5 }, "-=0.4")
+      tl.from(".hero-copy .kicker", { y:20, opacity:0, duration:0.5 })
         .from(".hero h1 span", { yPercent:110, opacity:0, stagger:0.03, duration:0.9 }, "-=0.2")
         .from(".hero .lede, .hero-actions", { y:24, opacity:0, stagger:0.08, duration:0.7 }, "-=0.45");
     }

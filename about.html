@@ -143,7 +143,7 @@ body.is-loading .mobile-panel{opacity:0;pointer-events:none}
 .muted{color:var(--muted)}
 .ink{color:var(--ink)}
 .light{background:var(--white);color:var(--ink)}
-.light .lede{color:var(--body)}
+.light .lede,.paper .lede,.svc-overlap-card .lede{color:var(--body)}
 .paper{background:var(--paper);color:var(--ink)}
 .navy{background:var(--navy)}
 .giant{font-family:var(--font);font-weight:800;font-size:clamp(80px,18vw,240px);line-height:.8;letter-spacing:-.06em;color:rgba(0,173,239,.12);user-select:none}
@@ -163,7 +163,6 @@ canvas[data-scene]{display:block;width:100%;height:100%}
 .hero-copy{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;padding:140px 0 80px;width:min(1240px,calc(100% - 40px));margin:0 auto}
 .hero h1{overflow:hidden;font-size:clamp(36px,6.4vw,86px);max-width:14ch}
 .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
-.intro-line{position:absolute;top:50%;left:0;height:2px;width:0;background:var(--cyan);z-index:3}
 .webgl-fallback{position:absolute;inset:0;background:
   radial-gradient(circle at 70% 40%,rgba(0,173,239,.28),transparent 40%),
   radial-gradient(circle at 20% 80%,rgba(46,49,146,.5),transparent 42%),
@@ -171,16 +170,18 @@ canvas[data-scene]{display:block;width:100%;height:100%}
 .no-webgl .webgl-fallback{display:block}
 
 /* Services rail */
-.rail-pin{height:100vh;overflow:hidden;position:relative;background:var(--deep);z-index:2}
-.rail{display:flex;height:100%;will-change:transform}
-.rail-panel{position:relative;flex:0 0 100vw;width:100vw;height:100%;display:grid;grid-template-columns:minmax(280px,.92fr) 1.08fr;gap:0;align-items:stretch;min-width:0}
-.rail-copy{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:120px 40px 64px clamp(24px,4vw,72px);max-width:640px}
-.rail-panel h3{font-size:clamp(28px,4.4vw,64px);max-width:16ch;line-height:.9}
-.rail-visual{position:relative;height:100%;min-height:0;overflow:hidden}
-.rail-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.06)}
-.rail-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--deep) 0%,rgba(7,11,24,.35) 28%,transparent 58%),linear-gradient(180deg,rgba(7,11,24,.2) 0%,transparent 28%,rgba(7,11,24,.45) 100%);pointer-events:none}
-.rail-end{grid-template-columns:1fr;place-items:center;background:radial-gradient(800px 480px at 70% 40%,rgba(0,173,239,.16),transparent 55%),var(--deep)}
-.rail-end .rail-copy{max-width:16ch;padding:120px 40px;justify-content:center;text-align:center;align-items:center}
+.rail-pin{height:100vh;overflow:hidden;position:relative;background:var(--deep);z-index:2;isolation:isolate}
+.rail{display:flex;height:100%;width:max-content;will-change:transform;transform:translate3d(0,0,0);backface-visibility:hidden}
+.rail-panel{position:relative;flex:0 0 100vw;width:100vw;height:100%;display:block;min-width:0;margin-right:-2px;background:var(--deep);overflow:hidden;transform:translateZ(0);backface-visibility:hidden;box-shadow:2px 0 0 0 var(--deep)}
+.rail-copy{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;height:100%;padding:120px clamp(24px,5vw,72px) 64px;max-width:min(640px,58vw);box-sizing:border-box}
+.rail-panel h3{font-size:clamp(28px,4.4vw,64px);max-width:16ch;line-height:.9;text-shadow:0 2px 24px rgba(7,11,24,.55)}
+.rail-copy .lede{text-shadow:0 2px 18px rgba(7,11,24,.5)}
+.rail-visual{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.rail-visual img{position:absolute;inset:-2%;width:104%;height:104%;max-width:none;object-fit:cover;object-position:center 45%;transform:translateZ(0) scale(1.03);transform-origin:center center;will-change:transform;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.rail-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,11,24,.92) 0%,rgba(7,11,24,.72) 28%,rgba(7,11,24,.28) 58%,rgba(7,11,24,.45) 100%),linear-gradient(180deg,rgba(7,11,24,.28) 0%,transparent 34%,rgba(7,11,24,.55) 100%);pointer-events:none;z-index:1}
+.rail-end{display:grid;place-items:center;background:radial-gradient(800px 480px at 70% 40%,rgba(0,173,239,.16),transparent 55%),var(--deep);margin-right:0}
+.rail-end .rail-visual{display:none}
+.rail-end .rail-copy{max-width:16ch;padding:120px 40px;justify-content:center;text-align:center;align-items:center;height:auto}
 
 /* Process */
 .process{display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative}
@@ -274,10 +275,9 @@ canvas[data-scene]{display:block;width:100%;height:100%}
   body.nav-open .mobile-panel{transform:none}
   .mobile-panel a,.mobile-panel button{display:block;width:100%;text-align:left;background:none;border:0;color:#fff;padding:12px 0;font-family:var(--font);font-size:22px;font-weight:700}
   .mobile-panel .sub a{font-size:16px;font-weight:500;color:rgba(255,255,255,.72);padding-left:12px}
-  .rail-panel{flex-basis:100vw;width:100vw;grid-template-columns:1fr;grid-template-rows:1fr 42vh}
+  .rail-panel{flex-basis:100vw;width:100vw}
   .rail-copy{padding:110px 24px 28px;max-width:none;justify-content:flex-end}
-  .rail-visual{min-height:0;height:auto;grid-row:2}
-  .rail-visual::after{background:linear-gradient(180deg,rgba(7,11,24,.15),transparent 30%,rgba(7,11,24,.55))}
+  .rail-visual::after{background:linear-gradient(180deg,rgba(7,11,24,.45) 0%,rgba(7,11,24,.2) 40%,rgba(7,11,24,.78) 100%),linear-gradient(90deg,rgba(7,11,24,.55),transparent 60%)}
   .rail-end{min-height:100vh}
   .rail-end .rail-copy{padding:120px 24px}
   .foot-body{grid-template-columns:1fr 1fr;gap:36px 28px}
@@ -313,18 +313,80 @@ canvas[data-scene]{display:block;width:100%;height:100%}
 }
 
 
-.about-hero{min-height:100vh;display:grid;grid-template-columns:1.2fr .8fr}
-.about-hero .copy{display:flex;flex-direction:column;justify-content:flex-end;padding:140px 8vw 80px}
-.timeline{display:flex;gap:48px;overflow:hidden}
-.time-card{flex:0 0 70%;padding:48px;border-left:2px solid var(--cyan)}
-.values{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.values article{padding:32px;border:1px solid var(--line);border-radius:20px;min-height:240px}
+.about-hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;isolation:isolate;background:var(--deep)}
+.about-hero .about-hero-media{position:absolute;inset:0;z-index:0}
+.about-hero .about-hero-media img{width:100%;height:100%;object-fit:cover;object-position:68% 42%;transform:scale(1.05)}
+.about-hero .overlay-scrim{z-index:1;background:
+  linear-gradient(105deg,rgba(7,11,24,.88) 0%,rgba(7,11,24,.55) 42%,rgba(7,11,24,.28) 68%,rgba(7,11,24,.55) 100%),
+  linear-gradient(180deg,rgba(7,11,24,.35) 0%,transparent 28%,rgba(7,11,24,.82) 100%)}
+.about-hero-copy{position:relative;z-index:2;width:min(1240px,calc(100% - 40px));margin:0 auto;padding:120px 0 max(48px,env(safe-area-inset-bottom,0px));display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.7fr);gap:28px 48px;align-items:end}
+.about-hero-copy .kicker{margin:0 0 14px}
+.about-hero-copy h1{margin:0;font-size:clamp(44px,7.2vw,92px);line-height:.88;letter-spacing:-.05em;max-width:10ch}
+.about-hero-copy .lede{margin:18px 0 0;max-width:36ch;color:rgba(255,255,255,.9);text-shadow:0 2px 16px rgba(7,11,24,.55)}
+.about-hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.about-hero-meta{justify-self:end;max-width:28ch;padding:0 0 6px 20px;border-left:2px solid var(--cyan)}
+.about-hero-meta b{display:block;font-family:var(--font);font-size:clamp(40px,5vw,64px);font-weight:800;line-height:.9;letter-spacing:-.04em;color:#fff}
+.about-hero-meta span{display:block;margin-top:10px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.72)}
+.about-history{background:var(--deep-2)}
+.about-history .wrap{position:relative}
+.about-history .about-history-head{max-width:18ch;margin:0 0 40px}
+.about-history .about-history-head .display{font-size:clamp(32px,4.8vw,64px);line-height:.95;letter-spacing:-.04em}
+.timeline{display:grid;grid-template-columns:1.15fr .85fr;gap:28px 40px;align-items:start}
+.time-card{padding:0 0 0 22px;border-left:2px solid rgba(0,173,239,.55);min-width:0}
+.time-card .kicker{margin:0 0 10px}
+.time-card .display{font-size:clamp(28px,3.2vw,40px);line-height:1.05;letter-spacing:-.03em;margin:0 0 14px;overflow-wrap:anywhere}
+.time-card p{margin:0;color:rgba(255,255,255,.82);font-size:15px;line-height:1.7;max-width:52ch}
+.time-card .scope-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 18px}
+.time-card .scope-list li{position:relative;padding:6px 0 6px 16px;color:rgba(255,255,255,.88);font-family:var(--font);font-size:14px;font-weight:600;line-height:1.35;border-bottom:1px solid rgba(255,255,255,.08)}
+.time-card .scope-list li::before{content:"";position:absolute;left:0;top:14px;width:6px;height:6px;border-radius:50%;background:var(--cyan)}
+.about-values-band{background:linear-gradient(180deg,#eef5fb 0%,#e4eef8 100%);color:var(--ink)}
+.about-values-band .about-values-head{max-width:16ch;margin:0 0 36px}
+.about-values-band .about-values-head .display{font-size:clamp(32px,4.6vw,60px);line-height:.95;letter-spacing:-.04em}
+.about-values{display:grid;grid-template-columns:1.05fr .95fr;gap:28px 40px;align-items:stretch}
+.stmt-stack{display:flex;flex-direction:column;gap:10px}
+.stmt{appearance:none;width:100%;text-align:left;cursor:pointer;border:1px solid rgba(46,49,146,.12);border-radius:18px;background:#fff;padding:18px 20px;display:grid;grid-template-columns:44px 1fr auto;gap:6px 14px;align-items:center;transition:border-color .25s,box-shadow .25s,transform .25s var(--ease),background .25s,padding .25s}
+.stmt:hover{border-color:rgba(0,173,239,.45);transform:translateY(-1px)}
+.stmt:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.stmt.is-on{border-color:rgba(0,173,239,.55);box-shadow:0 16px 36px rgba(18,42,84,.1);background:#fff;align-items:start;padding:20px}
+.stmt-idx{font-family:var(--font);font-size:12px;font-weight:800;letter-spacing:.16em;color:var(--cyan);padding-top:4px}
+.stmt-title{font-family:var(--font);font-size:clamp(18px,2vw,24px);font-weight:800;letter-spacing:-.02em;color:#1b2559;line-height:1.2;padding-top:2px}
+.stmt-mark{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(0,173,239,.4);display:grid;place-items:center;justify-self:end;margin-top:2px;transition:background .25s,border-color .25s}
+.stmt-mark i{display:block;width:8px;height:8px;border-radius:50%;background:transparent;transition:background .25s,transform .25s}
+.stmt.is-on .stmt-mark{border-color:var(--cyan);background:rgba(0,173,239,.1)}
+.stmt.is-on .stmt-mark i{background:var(--cyan);transform:scale(1.05)}
+.stmt-body{grid-column:2 / 3;margin:0;max-height:0;opacity:0;overflow:hidden;color:#4a5568;font-size:15px;line-height:1.65;transition:max-height .35s var(--ease),opacity .25s,margin .25s}
+.stmt.is-on .stmt-body{max-height:120px;opacity:1;margin-top:8px}
+.about-values-stage{position:relative;min-height:360px;border-radius:28px;overflow:hidden;background:#10183f;box-shadow:0 24px 48px rgba(18,42,84,.12)}
+.about-values-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .45s ease,transform .9s var(--ease);filter:saturate(.9) contrast(1.02)}
+.about-values-stage img.is-on{opacity:1;transform:scale(1)}
+.about-values-stage::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(7,11,24,.78));pointer-events:none}
+.about-values-caption{position:absolute;left:22px;right:22px;bottom:22px;z-index:2;color:#fff}
+.about-values-caption b{display:block;font-family:var(--font);font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.about-values-caption span{display:block;margin-top:8px;font-size:14px;line-height:1.55;color:rgba(255,255,255,.86);max-width:36ch}
+.about-values-foot{margin:36px 0 0;max-width:62ch;color:#3a4660;font-size:16px;line-height:1.7}
 .about-cta{position:relative;min-height:70vh;display:flex;align-items:flex-end;overflow:hidden;padding:0}
 .about-cta .about-cta-media{position:absolute;inset:0}
 .about-cta .about-cta-media img{width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.04)}
 .about-cta .overlay-scrim{z-index:1;background:linear-gradient(105deg,rgba(7,11,24,.86) 0%,rgba(7,11,24,.48) 52%,rgba(7,11,24,.7) 100%),linear-gradient(180deg,rgba(7,11,24,.15) 0%,rgba(7,11,24,.82) 100%)}
 .about-cta .wrap{position:relative;z-index:2;padding:120px 0}
-@media(max-width:900px){.about-hero,.values{grid-template-columns:1fr}.about-hero{min-height:auto}.about-cta{min-height:56vh}}
+@media(max-width:900px){
+  .about-hero{min-height:92svh}
+  .about-hero .about-hero-media img{object-position:72% 40%}
+  .about-hero-copy{grid-template-columns:1fr;gap:22px;width:calc(100% - 36px);padding:96px 0 max(28px,env(safe-area-inset-bottom,0px))}
+  .about-hero-copy h1{font-size:clamp(40px,12vw,56px);max-width:9ch}
+  .about-hero-copy .lede{max-width:34ch;font-size:15px}
+  .about-hero-actions{flex-direction:column;align-items:stretch;max-width:300px}
+  .about-hero-actions .btn{justify-content:center}
+  .about-hero-meta{justify-self:start;border-left:0;border-top:1px solid rgba(0,173,239,.45);padding:14px 0 0;max-width:none}
+  .about-hero-meta b{font-size:clamp(36px,10vw,48px)}
+  .timeline{grid-template-columns:1fr;gap:28px}
+  .time-card .scope-list{grid-template-columns:1fr}
+  .about-history .about-history-head{max-width:none;margin-bottom:28px}
+  .about-values{grid-template-columns:1fr;gap:20px}
+  .about-values-stage{min-height:280px;border-radius:22px}
+  .about-values-band .about-values-head{max-width:none}
+  .about-cta{min-height:56vh}
+}
 
   </style>
 </head>
@@ -394,18 +456,28 @@ canvas[data-scene]{display:block;width:100%;height:100%}
 </nav>
 
 <main id="main">
-<section class="about-hero light">
-  <div class="copy">
-    <p class="kicker ink">Company</p>
-    <h1 class="display ink" data-split>About IMEX</h1>
-    <p class="lede" style="margin-top:20px">The story behind every shipment — a Kanpur forwarder built on air freight, customs clearance, and a distinct brand image.</p>
+<section class="hero about-hero" data-about-hero>
+  <div class="about-hero-media" aria-hidden="true">
+    <img src="assets/images/background/banner-1.jpg" alt="" width="1920" height="1080">
   </div>
-  <div class="img-clip">
-    <img src="assets/images/background/banner-1.jpg" alt="Ship, truck and aircraft — IMEX multimodal logistics" data-parallax="-14">
-    <div class="overlay-scrim"></div>
+  <div class="overlay-scrim"></div>
+  <div class="about-hero-copy hero-copy">
+    <div>
+      <p class="kicker">Kanpur · Since 1994</p>
+      <h1 class="display" data-split>About IMEX</h1>
+      <p class="lede">The story behind every shipment — a Kanpur forwarder built on air freight, customs clearance, and a distinct brand image.</p>
+      <div class="about-hero-actions">
+        <a class="btn btn-cyan magnetic" href="#company-intro">Our story <span class="arr">↓</span></a>
+        <a class="btn btn-ghost magnetic" href="services.html" data-vt="wipe">Explore services</a>
+      </div>
+    </div>
+    <aside class="about-hero-meta">
+      <b>1994</b>
+      <span>Foundation year · CONCOR awarded</span>
+    </aside>
   </div>
 </section>
-<section class="section light">
+<section class="section light" id="company-intro">
   <div class="wrap" style="display:grid;grid-template-columns:.8fr 1.2fr;gap:48px">
     <div class="year-mask" style="font-size:clamp(80px,14vw,180px);color:transparent;-webkit-text-stroke:1px #2E3192">1994</div>
     <div>
@@ -414,23 +486,30 @@ canvas[data-scene]{display:block;width:100%;height:100%}
     </div>
   </div>
 </section>
-<section class="section" style="background:var(--deep-2)">
+<section class="section about-history">
   <div class="wrap">
-    <p class="kicker">History</p>
-    <h2 class="display" style="margin-bottom:32px">From a founder’s specialty to a full logistics house</h2>
+    <div class="about-history-head">
+      <p class="kicker">History</p>
+      <h2 class="display">From a founder’s specialty to a full logistics house</h2>
+    </div>
     <div class="timeline">
       <article class="time-card" data-reveal>
         <p class="kicker">1994</p>
-        <h3 class="display" style="font-size:36px;margin:10px 0">Foundation</h3>
+        <h3 class="display">Foundation</h3>
         <p>Being established in 1994, Foundation of “Imex Clearing” was the ultimate realization of the dream of Mr. Suresh Kumar Mishra. Who initially started air freights and custom clearance business to many challenging destinations all over the world. He made this challenge his specialty and later diversified and created a distinct brand image.</p>
       </article>
       <article class="time-card" data-reveal>
         <p class="kicker">What we do</p>
-        <h3 class="display" style="font-size:36px;margin:10px 0">The complete ambit</h3>
-        <ul style="line-height:2">
-          <li>Sea Freight</li><li>Outbound LCL Consolidation</li><li>Inbound LCL Consolidation</li>
-          <li>Buyer Consolidation</li><li>Global FCL Forwarding</li><li>Air Freight</li>
-          <li>Custom Clearance</li><li>DGFT / Licensing Works</li>
+        <h3 class="display">The complete ambit</h3>
+        <ul class="scope-list">
+          <li>Sea Freight</li>
+          <li>Outbound LCL Consolidation</li>
+          <li>Inbound LCL Consolidation</li>
+          <li>Buyer Consolidation</li>
+          <li>Global FCL Forwarding</li>
+          <li>Air Freight</li>
+          <li>Custom Clearance</li>
+          <li>DGFT / Licensing Works</li>
         </ul>
       </article>
     </div>
@@ -446,16 +525,44 @@ canvas[data-scene]{display:block;width:100%;height:100%}
     <img src="assets/images/block/delivery.png" alt="IMEX Clearing fast product delivery services worldwide" loading="lazy">
   </div>
 </section>
-<section class="section paper">
+<section class="section about-values-band" data-about-values>
   <div class="wrap">
-    <p class="kicker ink">How we work</p>
-    <h2 class="display ink" style="margin-bottom:28px">Statements from the company</h2>
-    <div class="values">
-      <article data-reveal><h3 class="display ink" style="font-size:28px">Fast delivery</h3><p>Proven track record of fast delivery</p></article>
-      <article data-reveal><h3 class="display ink" style="font-size:28px">Secured service</h3><p>Stay secured be assured</p></article>
-      <article data-reveal><h3 class="display ink" style="font-size:28px">Worldwide shipping</h3><p>Providing transportation services worldwide</p></article>
+    <div class="about-values-head">
+      <p class="kicker ink">How we work</p>
+      <h2 class="display ink">Statements from the company</h2>
     </div>
-    <p class="lede" style="margin-top:36px" data-reveal>Imex Clearing is specializes in providing fully integrated logistics solutions world-wide. All the functions are specially designed to ensure the rapid and safe transit of goods. Imex Clearing services are targeted at optimizing logistical operations.</p>
+    <div class="about-values">
+      <div class="stmt-stack" role="tablist" aria-label="Company statements">
+        <button class="stmt is-on" type="button" role="tab" aria-selected="true" data-stmt="0">
+          <span class="stmt-idx">01</span>
+          <span class="stmt-title">Fast delivery</span>
+          <span class="stmt-mark" aria-hidden="true"><i></i></span>
+          <p class="stmt-body">Proven track record of fast delivery</p>
+        </button>
+        <button class="stmt" type="button" role="tab" aria-selected="false" data-stmt="1" tabindex="-1">
+          <span class="stmt-idx">02</span>
+          <span class="stmt-title">Secured service</span>
+          <span class="stmt-mark" aria-hidden="true"><i></i></span>
+          <p class="stmt-body">Stay secured be assured</p>
+        </button>
+        <button class="stmt" type="button" role="tab" aria-selected="false" data-stmt="2" tabindex="-1">
+          <span class="stmt-idx">03</span>
+          <span class="stmt-title">Worldwide shipping</span>
+          <span class="stmt-mark" aria-hidden="true"><i></i></span>
+          <p class="stmt-body">Providing transportation services worldwide</p>
+        </button>
+      </div>
+      <aside class="about-values-stage" aria-live="polite">
+        <img class="is-on" src="assets/images/block/delivery.png" alt="" width="900" height="700" data-stmt-img="0">
+        <img src="assets/images/block/about-img.png" alt="" width="900" height="700" data-stmt-img="1">
+        <img src="assets/images/background/banner-1.jpg" alt="" width="1200" height="800" data-stmt-img="2">
+        <div class="about-values-caption">
+          <b data-stmt-title>Fast delivery</b>
+          <span data-stmt-copy>Proven track record of fast delivery</span>
+        </div>
+      </aside>
+    </div>
+    <p class="about-values-foot" data-reveal>Imex Clearing is specializes in providing fully integrated logistics solutions world-wide. All the functions are specially designed to ensure the rapid and safe transit of goods. Imex Clearing services are targeted at optimizing logistical operations.</p>
   </div>
 </section>
 <section class="section about-cta">
@@ -739,6 +846,17 @@ canvas[data-scene]{display:block;width:100%;height:100%}
   document.querySelector(".to-top")?.addEventListener("click", () => {
     if (lenis) lenis.scrollTo(0); else window.scrollTo({ top:0, behavior:"smooth" });
   });
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const id = a.getAttribute("href");
+    if (!id || id === "#") return;
+    const target = document.querySelector(id);
+    if (!target) return;
+    e.preventDefault();
+    if (lenis) lenis.scrollTo(target, { offset: -24 });
+    else target.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
   window.addEventListener("scroll", () => {
     document.querySelector(".to-top")?.classList.toggle("show", window.scrollY > 600);
   }, { passive: true });
@@ -936,10 +1054,14 @@ canvas[data-scene]{display:block;width:100%;height:100%}
     const railTween = gsap.to(rail, {
       x: () => -(rail.scrollWidth - innerWidth),
       ease: "none",
+      force3D: true,
+      modifiers: {
+        x: (v) => `${Math.round(parseFloat(v))}px`
+      },
       scrollTrigger: {
         trigger: ".rail-pin",
         pin: true,
-        scrub: 1,
+        scrub: true,
         invalidateOnRefresh: true,
         anticipatePin: 1,
         end: () => "+=" + Math.max(rail.scrollWidth - innerWidth, innerWidth)
@@ -960,13 +1082,13 @@ canvas[data-scene]{display:block;width:100%;height:100%}
       });
       const photo = p.querySelector(".rail-visual img");
       if (photo) {
-        gsap.fromTo(photo, { scale: 1.12 }, {
-          scale: 1.04, ease: "none",
+        gsap.fromTo(photo, { scale: 1.08 }, {
+          scale: 1.02, ease: "none", force3D: true,
           scrollTrigger: {
             trigger: p,
             containerAnimation: railTween,
-            start: "left 100%",
-            end: "left -20%",
+            start: "left 95%",
+            end: "left 5%",
             scrub: true
           }
         });
@@ -1593,6 +1715,43 @@ canvas[data-scene]{display:block;width:100%;height:100%}
     });
   })();
 
+  /* About statements */
+  (function aboutValues(){
+    const band = document.querySelector("[data-about-values]");
+    if (!band) return;
+    const tabs = Array.prototype.slice.call(band.querySelectorAll(".stmt"));
+    const imgs = Array.prototype.slice.call(band.querySelectorAll("[data-stmt-img]"));
+    const title = band.querySelector("[data-stmt-title]");
+    const copy = band.querySelector("[data-stmt-copy]");
+    const activate = (idx) => {
+      tabs.forEach((tab, i) => {
+        const on = i === idx;
+        tab.classList.toggle("is-on", on);
+        tab.setAttribute("aria-selected", on ? "true" : "false");
+        tab.tabIndex = on ? 0 : -1;
+      });
+      imgs.forEach((img, i) => img.classList.toggle("is-on", i === idx));
+      const active = tabs[idx];
+      if (active && title) title.textContent = active.querySelector(".stmt-title")?.textContent || "";
+      if (active && copy) copy.textContent = active.querySelector(".stmt-body")?.textContent || "";
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener("click", () => activate(i));
+      tab.addEventListener("keydown", (e) => {
+        if (e.key !== "ArrowDown" && e.key !== "ArrowUp" && e.key !== "Home" && e.key !== "End") return;
+        e.preventDefault();
+        let next = i;
+        if (e.key === "ArrowDown") next = (i + 1) % tabs.length;
+        if (e.key === "ArrowUp") next = (i - 1 + tabs.length) % tabs.length;
+        if (e.key === "Home") next = 0;
+        if (e.key === "End") next = tabs.length - 1;
+        activate(next);
+        tabs[next].focus();
+      });
+    });
+    activate(0);
+  })();
+
   /* Enquiry band */
   (function quoteBand(){
     const band = document.querySelector("[data-quote-band]");
@@ -1783,15 +1942,13 @@ canvas[data-scene]{display:block;width:100%;height:100%}
       return;
     }
     const tl = gsap.timeline({ defaults:{ ease:"power3.out" }, onComplete: () => ScrollTrigger.refresh() });
-    tl.fromTo(".intro-line", { width:0 }, { width:"100%", duration:1.1 })
-      .to(".intro-line", { autoAlpha: 0, duration: 0.45 }, "+=0.15");
     if (document.querySelector(".hero-film")) {
-      tl.from(".hero-film .hero-lead", { y:16, opacity:0, duration:0.5 }, "-=0.4")
+      tl.from(".hero-film .hero-lead", { y:16, opacity:0, duration:0.5 })
         .from(".hero-film .hero-line > span", { yPercent:110, opacity:0, stagger:0.1, duration:0.85 }, "-=0.2")
         .from(".hero-film .hero-sub", { y:18, opacity:0, duration:0.55 }, "-=0.45")
         .from(".hero-film .hero-aside, .hero-film .hero-actions", { y:20, opacity:0, stagger:0.08, duration:0.6 }, "-=0.35");
     } else {
-      tl.from(".hero-copy .kicker", { y:20, opacity:0, duration:0.5 }, "-=0.4")
+      tl.from(".hero-copy .kicker", { y:20, opacity:0, duration:0.5 })
         .from(".hero h1 span", { yPercent:110, opacity:0, stagger:0.03, duration:0.9 }, "-=0.2")
         .from(".hero .lede, .hero-actions", { y:24, opacity:0, stagger:0.08, duration:0.7 }, "-=0.45");
     }

@@ -503,7 +503,6 @@ home = r'''
   <canvas id="heroFrames" class="hero-film-canvas" data-frames="192" data-src="assets/images/hero-frames/frame-" width="1280" height="720" aria-hidden="true"></canvas>
   <div class="hero-film-scrim"></div>
   <div class="hero-film-progress" aria-hidden="true"></div>
-  <div class="intro-line"></div>
   <div class="hero-copy">
     <div class="hero-title-block">
       <p class="hero-lead">IMEX Clearing & Logistics</p>
@@ -811,32 +810,104 @@ home = r'''
 '''
 
 about_css = '''
-.about-hero{min-height:100vh;display:grid;grid-template-columns:1.2fr .8fr}
-.about-hero .copy{display:flex;flex-direction:column;justify-content:flex-end;padding:140px 8vw 80px}
-.timeline{display:flex;gap:48px;overflow:hidden}
-.time-card{flex:0 0 70%;padding:48px;border-left:2px solid var(--cyan)}
-.values{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.values article{padding:32px;border:1px solid var(--line);border-radius:20px;min-height:240px}
+.about-hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;isolation:isolate;background:var(--deep)}
+.about-hero .about-hero-media{position:absolute;inset:0;z-index:0}
+.about-hero .about-hero-media img{width:100%;height:100%;object-fit:cover;object-position:68% 42%;transform:scale(1.05)}
+.about-hero .overlay-scrim{z-index:1;background:
+  linear-gradient(105deg,rgba(7,11,24,.88) 0%,rgba(7,11,24,.55) 42%,rgba(7,11,24,.28) 68%,rgba(7,11,24,.55) 100%),
+  linear-gradient(180deg,rgba(7,11,24,.35) 0%,transparent 28%,rgba(7,11,24,.82) 100%)}
+.about-hero-copy{position:relative;z-index:2;width:min(1240px,calc(100% - 40px));margin:0 auto;padding:120px 0 max(48px,env(safe-area-inset-bottom,0px));display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.7fr);gap:28px 48px;align-items:end}
+.about-hero-copy .kicker{margin:0 0 14px}
+.about-hero-copy h1{margin:0;font-size:clamp(44px,7.2vw,92px);line-height:.88;letter-spacing:-.05em;max-width:10ch}
+.about-hero-copy .lede{margin:18px 0 0;max-width:36ch;color:rgba(255,255,255,.9);text-shadow:0 2px 16px rgba(7,11,24,.55)}
+.about-hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.about-hero-meta{justify-self:end;max-width:28ch;padding:0 0 6px 20px;border-left:2px solid var(--cyan)}
+.about-hero-meta b{display:block;font-family:var(--font);font-size:clamp(40px,5vw,64px);font-weight:800;line-height:.9;letter-spacing:-.04em;color:#fff}
+.about-hero-meta span{display:block;margin-top:10px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.72)}
+.about-history{background:var(--deep-2)}
+.about-history .wrap{position:relative}
+.about-history .about-history-head{max-width:18ch;margin:0 0 40px}
+.about-history .about-history-head .display{font-size:clamp(32px,4.8vw,64px);line-height:.95;letter-spacing:-.04em}
+.timeline{display:grid;grid-template-columns:1.15fr .85fr;gap:28px 40px;align-items:start}
+.time-card{padding:0 0 0 22px;border-left:2px solid rgba(0,173,239,.55);min-width:0}
+.time-card .kicker{margin:0 0 10px}
+.time-card .display{font-size:clamp(28px,3.2vw,40px);line-height:1.05;letter-spacing:-.03em;margin:0 0 14px;overflow-wrap:anywhere}
+.time-card p{margin:0;color:rgba(255,255,255,.82);font-size:15px;line-height:1.7;max-width:52ch}
+.time-card .scope-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 18px}
+.time-card .scope-list li{position:relative;padding:6px 0 6px 16px;color:rgba(255,255,255,.88);font-family:var(--font);font-size:14px;font-weight:600;line-height:1.35;border-bottom:1px solid rgba(255,255,255,.08)}
+.time-card .scope-list li::before{content:"";position:absolute;left:0;top:14px;width:6px;height:6px;border-radius:50%;background:var(--cyan)}
+.about-values-band{background:linear-gradient(180deg,#eef5fb 0%,#e4eef8 100%);color:var(--ink)}
+.about-values-band .about-values-head{max-width:16ch;margin:0 0 36px}
+.about-values-band .about-values-head .display{font-size:clamp(32px,4.6vw,60px);line-height:.95;letter-spacing:-.04em}
+.about-values{display:grid;grid-template-columns:1.05fr .95fr;gap:28px 40px;align-items:stretch}
+.stmt-stack{display:flex;flex-direction:column;gap:10px}
+.stmt{appearance:none;width:100%;text-align:left;cursor:pointer;border:1px solid rgba(46,49,146,.12);border-radius:18px;background:#fff;padding:18px 20px;display:grid;grid-template-columns:44px 1fr auto;gap:6px 14px;align-items:center;transition:border-color .25s,box-shadow .25s,transform .25s var(--ease),background .25s,padding .25s}
+.stmt:hover{border-color:rgba(0,173,239,.45);transform:translateY(-1px)}
+.stmt:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.stmt.is-on{border-color:rgba(0,173,239,.55);box-shadow:0 16px 36px rgba(18,42,84,.1);background:#fff;align-items:start;padding:20px}
+.stmt-idx{font-family:var(--font);font-size:12px;font-weight:800;letter-spacing:.16em;color:var(--cyan);padding-top:4px}
+.stmt-title{font-family:var(--font);font-size:clamp(18px,2vw,24px);font-weight:800;letter-spacing:-.02em;color:#1b2559;line-height:1.2;padding-top:2px}
+.stmt-mark{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(0,173,239,.4);display:grid;place-items:center;justify-self:end;margin-top:2px;transition:background .25s,border-color .25s}
+.stmt-mark i{display:block;width:8px;height:8px;border-radius:50%;background:transparent;transition:background .25s,transform .25s}
+.stmt.is-on .stmt-mark{border-color:var(--cyan);background:rgba(0,173,239,.1)}
+.stmt.is-on .stmt-mark i{background:var(--cyan);transform:scale(1.05)}
+.stmt-body{grid-column:2 / 3;margin:0;max-height:0;opacity:0;overflow:hidden;color:#4a5568;font-size:15px;line-height:1.65;transition:max-height .35s var(--ease),opacity .25s,margin .25s}
+.stmt.is-on .stmt-body{max-height:120px;opacity:1;margin-top:8px}
+.about-values-stage{position:relative;min-height:360px;border-radius:28px;overflow:hidden;background:#10183f;box-shadow:0 24px 48px rgba(18,42,84,.12)}
+.about-values-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .45s ease,transform .9s var(--ease);filter:saturate(.9) contrast(1.02)}
+.about-values-stage img.is-on{opacity:1;transform:scale(1)}
+.about-values-stage::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(7,11,24,.78));pointer-events:none}
+.about-values-caption{position:absolute;left:22px;right:22px;bottom:22px;z-index:2;color:#fff}
+.about-values-caption b{display:block;font-family:var(--font);font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.about-values-caption span{display:block;margin-top:8px;font-size:14px;line-height:1.55;color:rgba(255,255,255,.86);max-width:36ch}
+.about-values-foot{margin:36px 0 0;max-width:62ch;color:#3a4660;font-size:16px;line-height:1.7}
 .about-cta{position:relative;min-height:70vh;display:flex;align-items:flex-end;overflow:hidden;padding:0}
 .about-cta .about-cta-media{position:absolute;inset:0}
 .about-cta .about-cta-media img{width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.04)}
 .about-cta .overlay-scrim{z-index:1;background:linear-gradient(105deg,rgba(7,11,24,.86) 0%,rgba(7,11,24,.48) 52%,rgba(7,11,24,.7) 100%),linear-gradient(180deg,rgba(7,11,24,.15) 0%,rgba(7,11,24,.82) 100%)}
 .about-cta .wrap{position:relative;z-index:2;padding:120px 0}
-@media(max-width:900px){.about-hero,.values{grid-template-columns:1fr}.about-hero{min-height:auto}.about-cta{min-height:56vh}}
+@media(max-width:900px){
+  .about-hero{min-height:92svh}
+  .about-hero .about-hero-media img{object-position:72% 40%}
+  .about-hero-copy{grid-template-columns:1fr;gap:22px;width:calc(100% - 36px);padding:96px 0 max(28px,env(safe-area-inset-bottom,0px))}
+  .about-hero-copy h1{font-size:clamp(40px,12vw,56px);max-width:9ch}
+  .about-hero-copy .lede{max-width:34ch;font-size:15px}
+  .about-hero-actions{flex-direction:column;align-items:stretch;max-width:300px}
+  .about-hero-actions .btn{justify-content:center}
+  .about-hero-meta{justify-self:start;border-left:0;border-top:1px solid rgba(0,173,239,.45);padding:14px 0 0;max-width:none}
+  .about-hero-meta b{font-size:clamp(36px,10vw,48px)}
+  .timeline{grid-template-columns:1fr;gap:28px}
+  .time-card .scope-list{grid-template-columns:1fr}
+  .about-history .about-history-head{max-width:none;margin-bottom:28px}
+  .about-values{grid-template-columns:1fr;gap:20px}
+  .about-values-stage{min-height:280px;border-radius:22px}
+  .about-values-band .about-values-head{max-width:none}
+  .about-cta{min-height:56vh}
+}
 '''
 about = r'''
-<section class="about-hero light">
-  <div class="copy">
-    <p class="kicker ink">Company</p>
-    <h1 class="display ink" data-split>About IMEX</h1>
-    <p class="lede" style="margin-top:20px">The story behind every shipment — a Kanpur forwarder built on air freight, customs clearance, and a distinct brand image.</p>
+<section class="hero about-hero" data-about-hero>
+  <div class="about-hero-media" aria-hidden="true">
+    <img src="assets/images/background/banner-1.jpg" alt="" width="1920" height="1080">
   </div>
-  <div class="img-clip">
-    <img src="assets/images/background/banner-1.jpg" alt="Ship, truck and aircraft — IMEX multimodal logistics" data-parallax="-14">
-    <div class="overlay-scrim"></div>
+  <div class="overlay-scrim"></div>
+  <div class="about-hero-copy hero-copy">
+    <div>
+      <p class="kicker">Kanpur · Since 1994</p>
+      <h1 class="display" data-split>About IMEX</h1>
+      <p class="lede">The story behind every shipment — a Kanpur forwarder built on air freight, customs clearance, and a distinct brand image.</p>
+      <div class="about-hero-actions">
+        <a class="btn btn-cyan magnetic" href="#company-intro">Our story <span class="arr">↓</span></a>
+        <a class="btn btn-ghost magnetic" href="services.html" data-vt="wipe">Explore services</a>
+      </div>
+    </div>
+    <aside class="about-hero-meta">
+      <b>1994</b>
+      <span>Foundation year · CONCOR awarded</span>
+    </aside>
   </div>
 </section>
-<section class="section light">
+<section class="section light" id="company-intro">
   <div class="wrap" style="display:grid;grid-template-columns:.8fr 1.2fr;gap:48px">
     <div class="year-mask" style="font-size:clamp(80px,14vw,180px);color:transparent;-webkit-text-stroke:1px #2E3192">1994</div>
     <div>
@@ -845,23 +916,30 @@ about = r'''
     </div>
   </div>
 </section>
-<section class="section" style="background:var(--deep-2)">
+<section class="section about-history">
   <div class="wrap">
-    <p class="kicker">History</p>
-    <h2 class="display" style="margin-bottom:32px">From a founder’s specialty to a full logistics house</h2>
+    <div class="about-history-head">
+      <p class="kicker">History</p>
+      <h2 class="display">From a founder’s specialty to a full logistics house</h2>
+    </div>
     <div class="timeline">
       <article class="time-card" data-reveal>
         <p class="kicker">1994</p>
-        <h3 class="display" style="font-size:36px;margin:10px 0">Foundation</h3>
+        <h3 class="display">Foundation</h3>
         <p>Being established in 1994, Foundation of “Imex Clearing” was the ultimate realization of the dream of Mr. Suresh Kumar Mishra. Who initially started air freights and custom clearance business to many challenging destinations all over the world. He made this challenge his specialty and later diversified and created a distinct brand image.</p>
       </article>
       <article class="time-card" data-reveal>
         <p class="kicker">What we do</p>
-        <h3 class="display" style="font-size:36px;margin:10px 0">The complete ambit</h3>
-        <ul style="line-height:2">
-          <li>Sea Freight</li><li>Outbound LCL Consolidation</li><li>Inbound LCL Consolidation</li>
-          <li>Buyer Consolidation</li><li>Global FCL Forwarding</li><li>Air Freight</li>
-          <li>Custom Clearance</li><li>DGFT / Licensing Works</li>
+        <h3 class="display">The complete ambit</h3>
+        <ul class="scope-list">
+          <li>Sea Freight</li>
+          <li>Outbound LCL Consolidation</li>
+          <li>Inbound LCL Consolidation</li>
+          <li>Buyer Consolidation</li>
+          <li>Global FCL Forwarding</li>
+          <li>Air Freight</li>
+          <li>Custom Clearance</li>
+          <li>DGFT / Licensing Works</li>
         </ul>
       </article>
     </div>
@@ -877,16 +955,44 @@ about = r'''
     <img src="assets/images/block/delivery.png" alt="IMEX Clearing fast product delivery services worldwide" loading="lazy">
   </div>
 </section>
-<section class="section paper">
+<section class="section about-values-band" data-about-values>
   <div class="wrap">
-    <p class="kicker ink">How we work</p>
-    <h2 class="display ink" style="margin-bottom:28px">Statements from the company</h2>
-    <div class="values">
-      <article data-reveal><h3 class="display ink" style="font-size:28px">Fast delivery</h3><p>Proven track record of fast delivery</p></article>
-      <article data-reveal><h3 class="display ink" style="font-size:28px">Secured service</h3><p>Stay secured be assured</p></article>
-      <article data-reveal><h3 class="display ink" style="font-size:28px">Worldwide shipping</h3><p>Providing transportation services worldwide</p></article>
+    <div class="about-values-head">
+      <p class="kicker ink">How we work</p>
+      <h2 class="display ink">Statements from the company</h2>
     </div>
-    <p class="lede" style="margin-top:36px" data-reveal>Imex Clearing is specializes in providing fully integrated logistics solutions world-wide. All the functions are specially designed to ensure the rapid and safe transit of goods. Imex Clearing services are targeted at optimizing logistical operations.</p>
+    <div class="about-values">
+      <div class="stmt-stack" role="tablist" aria-label="Company statements">
+        <button class="stmt is-on" type="button" role="tab" aria-selected="true" data-stmt="0">
+          <span class="stmt-idx">01</span>
+          <span class="stmt-title">Fast delivery</span>
+          <span class="stmt-mark" aria-hidden="true"><i></i></span>
+          <p class="stmt-body">Proven track record of fast delivery</p>
+        </button>
+        <button class="stmt" type="button" role="tab" aria-selected="false" data-stmt="1" tabindex="-1">
+          <span class="stmt-idx">02</span>
+          <span class="stmt-title">Secured service</span>
+          <span class="stmt-mark" aria-hidden="true"><i></i></span>
+          <p class="stmt-body">Stay secured be assured</p>
+        </button>
+        <button class="stmt" type="button" role="tab" aria-selected="false" data-stmt="2" tabindex="-1">
+          <span class="stmt-idx">03</span>
+          <span class="stmt-title">Worldwide shipping</span>
+          <span class="stmt-mark" aria-hidden="true"><i></i></span>
+          <p class="stmt-body">Providing transportation services worldwide</p>
+        </button>
+      </div>
+      <aside class="about-values-stage" aria-live="polite">
+        <img class="is-on" src="assets/images/block/delivery.png" alt="" width="900" height="700" data-stmt-img="0">
+        <img src="assets/images/block/about-img.png" alt="" width="900" height="700" data-stmt-img="1">
+        <img src="assets/images/background/banner-1.jpg" alt="" width="1200" height="800" data-stmt-img="2">
+        <div class="about-values-caption">
+          <b data-stmt-title>Fast delivery</b>
+          <span data-stmt-copy>Proven track record of fast delivery</span>
+        </div>
+      </aside>
+    </div>
+    <p class="about-values-foot" data-reveal>Imex Clearing is specializes in providing fully integrated logistics solutions world-wide. All the functions are specially designed to ensure the rapid and safe transit of goods. Imex Clearing services are targeted at optimizing logistical operations.</p>
   </div>
 </section>
 <section class="section about-cta">
@@ -948,7 +1054,7 @@ services_page = f'''
 {svc_blocks}
 '''
 
-def service_page(slug, title, kicker, scene, img, copy_html, extra="", layout="split"):
+def service_page(slug, title, kicker, scene, img, copy_html, extra="", layout="split", photo_hero=False):
     if layout == "stack":
         main = f'''
 <section class="section light">
@@ -970,7 +1076,7 @@ def service_page(slug, title, kicker, scene, img, copy_html, extra="", layout="s
     <div class="img-clip" style="min-height:70vh">
       <img src="{img}" alt="{title} — original IMEX photograph" loading="lazy">
     </div>
-    <div style="background:#fff;color:var(--ink);padding:48px;border-radius:24px;margin-top:-120px;position:relative;max-width:720px">
+    <div class="light svc-overlap-card" style="background:#fff;color:var(--ink);padding:48px;border-radius:24px;margin-top:-120px;position:relative;z-index:2;max-width:720px">
       {copy_html}
       <a class="btn btn-navy magnetic" href="quote.html" data-vt="zoom" style="margin-top:28px">Request a Quote <span class="arr">→</span></a>
     </div>
@@ -1003,7 +1109,20 @@ def service_page(slug, title, kicker, scene, img, copy_html, extra="", layout="s
     </div>
   </div>
 </section>'''
-    return f'''
+    if photo_hero:
+        hero = f'''
+<section class="hero service-photo-hero">
+  <div class="hero-canvas">
+    <img src="{img}" alt="{title} — original IMEX photograph" width="1920" height="1080">
+  </div>
+  <div class="overlay-scrim"></div>
+  <div class="hero-copy">
+    <p class="kicker">{kicker}</p>
+    <h1 class="display" data-split>{title}</h1>
+  </div>
+</section>'''
+    else:
+        hero = f'''
 <section class="hero">
   <canvas id="scene" class="hero-canvas" data-scene="{scene}"></canvas>
   <div class="webgl-fallback"></div>
@@ -1011,14 +1130,30 @@ def service_page(slug, title, kicker, scene, img, copy_html, extra="", layout="s
     <p class="kicker">{kicker}</p>
     <h1 class="display" data-split>{title}</h1>
   </div>
-</section>
+</section>'''
+    return f'''
+{hero}
 {main}
 {extra}
 {related(slug)}
 '''
 
+sea_css = '''
+.service-photo-hero{min-height:100vh;min-height:100svh;background:var(--deep)}
+.service-photo-hero .hero-canvas{overflow:hidden}
+.service-photo-hero .hero-canvas img{width:100%;height:100%;object-fit:cover;object-position:center 42%;transform:scale(1.06)}
+.service-photo-hero .overlay-scrim{z-index:1;background:linear-gradient(105deg,rgba(7,11,24,.82) 0%,rgba(7,11,24,.42) 48%,rgba(7,11,24,.58) 100%),linear-gradient(180deg,rgba(7,11,24,.22) 0%,rgba(7,11,24,.78) 100%)}
+.service-photo-hero .hero-copy{z-index:2;max-width:min(1240px,calc(100% - 40px))}
+.service-photo-hero .hero-copy .kicker,.service-photo-hero .hero-copy h1{text-shadow:0 2px 18px rgba(7,11,24,.55)}
+@media(max-width:900px){
+  .service-photo-hero{min-height:92svh}
+  .service-photo-hero .hero-canvas img{object-position:center 38%}
+  .service-photo-hero .overlay-scrim{background:linear-gradient(180deg,rgba(7,11,24,.55) 0%,rgba(7,11,24,.28) 36%,rgba(7,11,24,.88) 100%)}
+}
+'''
+
 sea = service_page("sea-freight.html","Sea Freight","The ocean cargo experience","ocean","assets/images/background/banner_s.jpg",
-'''<p class="lede">Imex Clearing & Logistics Private Limited offers complete sea freight solutions both for import and export. The company provides a wide range of services that include inbound, outbound ocean freight solutions, FCL/LCL cross trade and door-to-door delivery. Whether the requirement is consolidation, group page or full container load, our expert professionals are fully equipped to handle the job with a variety of options at the most competitive and reliable terms. We customize operations and handling services to match any specific requirement of door to door or port to port services.</p>''', extra='''<section class="section"><div class="wrap"><p class="kicker">Modes</p><h2 class="display" style="font-size:clamp(32px,5vw,64px)">Door to door or port to port</h2><p class="lede" style="margin-top:16px">Inbound, outbound, FCL/LCL cross trade and consolidation — the ocean surface of this page is procedural; the ship photograph is the original IMEX sea freight image.</p></div></section>''', layout="stack")
+'''<p class="lede">Imex Clearing & Logistics Private Limited offers complete sea freight solutions both for import and export. The company provides a wide range of services that include inbound, outbound ocean freight solutions, FCL/LCL cross trade and door-to-door delivery. Whether the requirement is consolidation, group page or full container load, our expert professionals are fully equipped to handle the job with a variety of options at the most competitive and reliable terms. We customize operations and handling services to match any specific requirement of door to door or port to port services.</p>''', extra='''<section class="section"><div class="wrap"><p class="kicker">Modes</p><h2 class="display" style="font-size:clamp(32px,5vw,64px)">Door to door or port to port</h2><p class="lede" style="margin-top:16px">Inbound, outbound, FCL/LCL cross trade and consolidation — handled with the original IMEX sea freight photograph as the page hero.</p></div></section>''', layout="stack", photo_hero=True)
 
 lcl = service_page("lcl-consolidation.html","Inbound/Outbound LCL Consolidation","Multiple shipments, one journey","packages","assets/images/background/banner_olc.jpg",
 '''<p class="lede">Imex Clearing & Logistics Private Limited offers LCL consolidation services from all Indian ports and hinterland ICDs to worldwide destinations. The destinations covered are comprehensive and to name a few, we offer weekly consoles to Felixstowe/ Thames Port, Antwerp, Rotterdam, Hamburg, Le Havre, Marseilles, Barcelona, Durban, Dubai/Jebel Ali, Colombo, Singapore, New York, Los Angeles etc. In addition destinations are also served via trans-shipment hubs.</p>
@@ -1028,18 +1163,18 @@ buyer = service_page("buyer-consolidation.html","Buyer Consolidation","Intellige
 '''<p class="lede">Imex clearing & Logistics Private Limited core activity and capability is buyer’s consolidation, a cost effective and efficient solution for customers, who have multiple vendors and regularly order / purchase goods from a specific region or country. In addition, we provide vendor management, Inland movement, Ware-housing, direct deliveries to retail outlets, itemized deliveries and distribution. We are well connected globally to serve the customer by giving real time information on the product as it travels through the supply chain. We also have EDI transfers that can be tailor made to suit your information requirements.</p>''', extra='''<section class="section light"><div class="wrap" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px"><article data-reveal><h3 class="display ink" style="font-size:22px">Vendor management</h3></article><article data-reveal><h3 class="display ink" style="font-size:22px">Inland movement</h3></article><article data-reveal><h3 class="display ink" style="font-size:22px">Ware-housing</h3></article><article data-reveal><h3 class="display ink" style="font-size:22px">EDI transfers</h3></article></div></section>''', layout="columns")
 
 fcl = service_page("global-fcl-forwarding.html","Global FCL Forwarding","Full container global movement","fcl","assets/images/links/stock-containers.jpg",
-'''<p class="lede">Imex Clearing & Logistics Private Limited, with the years of experience in freight forwarding offers inbound and outbound full container load services. Our solutions are tailor made to suit your requirement. We have exclusive service contracts with premium carriers that enable us to offer guaranteed space and competitive rates. We can handle large volumes on global basis or specific requirements on a single route.</p>''', extra='''<section class="section"><div class="wrap"><p class="giant">FCL</p><p class="lede">Guaranteed space and competitive rates through exclusive service contracts with premium carriers — stated exactly as on the original IMEX page.</p></div></section>''', layout="split")
+'''<p class="lede">Imex Clearing & Logistics Private Limited, with the years of experience in freight forwarding offers inbound and outbound full container load services. Our solutions are tailor made to suit your requirement. We have exclusive service contracts with premium carriers that enable us to offer guaranteed space and competitive rates. We can handle large volumes on global basis or specific requirements on a single route.</p>''', extra='''<section class="section"><div class="wrap"><p class="giant">FCL</p><p class="lede">Guaranteed space and competitive rates through exclusive service contracts with premium carriers — stated exactly as on the original IMEX page.</p></div></section>''', layout="split", photo_hero=True)
 
 air = service_page("air-freight.html","Air Freight","Logistics above the clouds","air","assets/images/background/banner_a.jpg",
-'''<p class="lede">Imex Clearing & Logistics Private Limited specializes in providing expert international Air freight forwarding services to companies large and small. We manage the movement of a single shipment or a complex freight management programme providing a flexible approach and a personalized service to all customers. We facilitate customized and tailor-made air freight solutions including multi-modal land, sea, air combos for inbound and outbound cargo making us an integral partner with our clients. Our impeccable service is supported by preferred carrier programme. We have partnership agreements for complex freight management operations thereby providing access to competitive pricing and capacity.</p>''', extra='''<section class="section" style="background:linear-gradient(#070b18,#121a3a)"><div class="wrap"><p class="kicker">Preferred carrier programme</p><h2 class="display">Land, sea and air combos</h2><p class="lede" style="margin-top:16px">Customized multi-modal solutions for inbound and outbound cargo.</p></div></section>''', layout="stack")
+'''<p class="lede">Imex Clearing & Logistics Private Limited specializes in providing expert international Air freight forwarding services to companies large and small. We manage the movement of a single shipment or a complex freight management programme providing a flexible approach and a personalized service to all customers. We facilitate customized and tailor-made air freight solutions including multi-modal land, sea, air combos for inbound and outbound cargo making us an integral partner with our clients. Our impeccable service is supported by preferred carrier programme. We have partnership agreements for complex freight management operations thereby providing access to competitive pricing and capacity.</p>''', extra='''<section class="section" style="background:linear-gradient(#070b18,#121a3a)"><div class="wrap"><p class="kicker">Preferred carrier programme</p><h2 class="display">Land, sea and air combos</h2><p class="lede" style="margin-top:16px">Customized multi-modal solutions for inbound and outbound cargo.</p></div></section>''', layout="stack", photo_hero=True)
 
 customs = service_page("customs-clearance.html","Customs Clearance","The intelligence behind every shipment","scan","assets/images/background/banner_cc.jpg",
 '''<p class="lede">Imex Clearing & Logistics Private Limited offers In-house Customs Clearance services at all major ports of India. We have specialty for all type of EXPORT CLEARANCE of goods like Machine, Food Items, Furniture, Chemicals Leather products and other project related items. We also offer clearance for all type of PROJECT LOGISTICS SERVICES so that our clients need not to worry for logistics as we focus on our client satisfaction.</p>
-<p class="muted" style="margin-top:12px">No clearance timelines or approval guarantees are stated beyond this original description.</p>''', extra='''<section class="section paper"><div class="wrap"><p class="kicker ink">Export clearance speciality</p><div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:20px"><span class="chip ink">Machine</span><span class="chip ink">Food Items</span><span class="chip ink">Furniture</span><span class="chip ink">Chemicals</span><span class="chip ink">Leather products</span><span class="chip ink">Project related items</span></div></div></section>''', layout="columns")
+<p class="muted" style="margin-top:12px">No clearance timelines or approval guarantees are stated beyond this original description.</p>''', extra='''<section class="section paper"><div class="wrap"><p class="kicker ink">Export clearance speciality</p><div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:20px"><span class="chip ink">Machine</span><span class="chip ink">Food Items</span><span class="chip ink">Furniture</span><span class="chip ink">Chemicals</span><span class="chip ink">Leather products</span><span class="chip ink">Project related items</span></div></div></section>''', layout="columns", photo_hero=True)
 
 dgft = service_page("dgft-licensing.html","DGFT / Licensing Works","Documentation meets global trade","docs","assets/images/background/banner_lic.jpg",
 '''<p class="lede">Imex Clearing & Logistics Private Limited Also Offers Service Related To DGFT and other Major Authorities Like FASSAI, PLANT QUARANTINE, COUNCIL FOR LEATHER EXPORTS, ANIMAL QUARANTINE and other Agencies Which Has Collaborations With Customs For Benefits of The Importers and Exporters, we also get the issue of licenses like DFIA, EPCG, MEIS, Advance Licenses etc. We can provide a complete solution for you export import need so we provide a wide variety of services like gst registration,tademarks registration, issue of new importer exporter code(iec)/ ammendment,MSME registration. we have a complete solution for your legal problems related to customs also.</p>
-<p class="muted" style="margin-top:12px">This page describes existing IMEX offerings only. It is not legal advice and does not issue licences on its own.</p>''', extra='''<section class="section light"><div class="wrap" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px"><article class="contact-card"><h3 class="display ink" style="font-size:22px">Licences</h3><p>DFIA, EPCG, MEIS, Advance Licenses</p></article><article class="contact-card"><h3 class="display ink" style="font-size:22px">Registrations</h3><p>GST, trademarks, IEC issue/amendment, MSME</p></article><article class="contact-card"><h3 class="display ink" style="font-size:22px">Authorities</h3><p>DGFT, FSSAI, Plant Quarantine, CLE, Animal Quarantine</p></article></div></section>''', layout="overlap")
+<p class="muted" style="margin-top:12px">This page describes existing IMEX offerings only. It is not legal advice and does not issue licences on its own.</p>''', extra='''<section class="section light"><div class="wrap" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px"><article class="contact-card"><h3 class="display ink" style="font-size:22px">Licences</h3><p>DFIA, EPCG, MEIS, Advance Licenses</p></article><article class="contact-card"><h3 class="display ink" style="font-size:22px">Registrations</h3><p>GST, trademarks, IEC issue/amendment, MSME</p></article><article class="contact-card"><h3 class="display ink" style="font-size:22px">Authorities</h3><p>DGFT, FSSAI, Plant Quarantine, CLE, Animal Quarantine</p></article></div></section>''', layout="overlap", photo_hero=True)
 
 vas_css = '''
 .vas-hero{min-height:78vh}
@@ -1047,13 +1182,19 @@ vas_css = '''
 .vas-hero .hero-canvas img{width:100%;height:100%;object-fit:cover;object-position:center 42%;transform:scale(1.06)}
 .vas-hero .overlay-scrim{z-index:1;background:linear-gradient(100deg,rgba(7,11,24,.78) 0%,rgba(7,11,24,.42) 46%,rgba(7,11,24,.62) 100%),linear-gradient(180deg,rgba(7,11,24,.2) 0%,rgba(7,11,24,.72) 100%)}
 .vas-hero .hero-copy{z-index:2;max-width:min(1240px,calc(100% - 40px))}
-.vas-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:22px}
-.vas-grid article{border-radius:22px;overflow:hidden;background:#fff;color:var(--ink);border:1px solid var(--line)}
+.vas-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:22px;align-items:stretch}
+.vas-grid article{border-radius:22px;overflow:hidden;background:#fff;color:var(--ink);border:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
 .vas-grid article:nth-child(1){grid-row:span 2}
-.vas-grid img{width:100%;height:220px;object-fit:cover}
-.vas-grid .pad{padding:24px}
+.vas-grid img{width:100%;height:220px;object-fit:cover;display:block;flex:0 0 auto}
+.vas-grid article:nth-child(1) img{flex:1 1 auto;height:auto;min-height:360px}
+.vas-grid .pad{padding:24px 24px 28px;flex:0 0 auto}
+.vas-grid .pad p{margin:10px 0 0;color:var(--body);line-height:1.55;max-width:42ch}
 .links-cols{display:grid;grid-template-columns:1fr 1fr;gap:32px}
-@media(max-width:800px){.vas-grid,.links-cols{grid-template-columns:1fr}}
+@media(max-width:800px){
+  .vas-grid,.links-cols{grid-template-columns:1fr}
+  .vas-grid article:nth-child(1){grid-row:auto}
+  .vas-grid article:nth-child(1) img{min-height:240px;flex:0 0 auto;height:220px}
+}
 '''
 vas = r'''
 <section class="hero vas-hero">
@@ -1305,7 +1446,7 @@ PAGES = [
      services_css, services_page, ""),
     ("sea-freight.html","sea-freight.html","Sea Freight Services India | IMEX International Kanpur",
      "Complete sea freight for import and export including inbound and outbound ocean solutions, FCL/LCL cross trade and door-to-door delivery.",
-     "", sea, "ocean"),
+     sea_css, sea, ""),
     ("lcl-consolidation.html","lcl-consolidation.html","Inbound & Outbound LCL Consolidation | IMEX Kanpur",
      "LCL consolidation from Indian ports and hinterland ICDs, plus import LCL from worldwide origins.",
      "", lcl, "packages"),
@@ -1314,16 +1455,16 @@ PAGES = [
      "", buyer, "buyer"),
     ("global-fcl-forwarding.html","global-fcl-forwarding.html","Global FCL Forwarding Services | IMEX International Kanpur",
      "Inbound and outbound full container load services with carrier contracts for space and competitive rates.",
-     "", fcl, "fcl"),
+     sea_css, fcl, ""),
     ("air-freight.html","air-freight.html","Air Freight Services India | IMEX International Kanpur",
      "International air freight forwarding for a single shipment or a complex programme, including multi-modal land, sea and air combos.",
-     "", air, "air"),
+     sea_css, air, ""),
     ("customs-clearance.html","customs-clearance.html","Customs Clearance Services India | IMEX International Kanpur",
      "In-house customs clearance at major Indian ports, including export clearance of machines, food, furniture, chemicals and leather products.",
-     "", customs, "scan"),
+     sea_css, customs, ""),
     ("dgft-licensing.html","dgft-licensing.html","DGFT & Licensing Works | IMEX International",
      "DGFT, FSSAI, plant and animal quarantine, leather export council work, plus DFIA, EPCG, MEIS, IEC, GST, MSME and trademark registrations.",
-     "", dgft, "docs"),
+     sea_css, dgft, ""),
     ("value-added-services.html","vas","Value Added Services | IMEX International Kanpur",
      "IMEX value added resources: ULDs, INCO terms, cargo classifications, charting terms, useful government links and currency converter.",
      vas_css, vas, "packages"),
