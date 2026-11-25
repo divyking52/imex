@@ -1,0 +1,2365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMEX International | Freight Forwarder & Customs Clearance, Kanpur</title>
+  <meta name="description" content="Imex Clearing & Logistics Private Limited — Kanpur freight forwarder for sea, air, LCL, FCL, customs clearance and DGFT licensing since 1994.">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/png" href="assets/logo/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js"></script>
+  <style>
+:root{
+  --cyan:#00ADEF;
+  --cyan-2:#33c3f3;
+  --navy:#2E3192;
+  --navy-2:#3a3eb0;
+  --ink:#222222;
+  --body:#565656;
+  --muted:#9f9f9f;
+  --line:#e7e8ec;
+  --paper:#f6f6f6;
+  --white:#ffffff;
+  --deep:#070b18;
+  --deep-2:#0e1430;
+  --deep-3:#121a3a;
+  --shadow:0 24px 80px rgba(7,11,24,.35);
+  --radius:18px;
+  --nav-h:84px;
+  --font:"Poppins",system-ui,sans-serif;
+  --font-b:"Roboto",system-ui,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto}
+html,body{background:var(--deep);color:var(--white);font-family:var(--font-b);font-weight:400;line-height:1.6}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font-family:inherit}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.skip{position:absolute;left:-999px;top:0;background:var(--cyan);color:#fff;padding:10px 16px;z-index:9999}
+.skip:focus{left:12px;top:12px}
+body.nav-open{overflow:hidden}
+
+/* Cursor */
+.cursor,.cursor-dot{pointer-events:none;position:fixed;top:0;left:0;z-index:9998;border-radius:50%;transform:translate(-50%,-50%);mix-blend-mode:difference}
+.cursor{width:42px;height:42px;border:1px solid #fff;transition:width .25s var(--ease),height .25s var(--ease),opacity .3s}
+.cursor-dot{width:6px;height:6px;background:#fff}
+.cursor.is-hover{width:72px;height:72px}
+@media (pointer:coarse){.cursor,.cursor-dot{display:none}}
+
+/* Boot loader — route clearance */
+body.is-loading{overflow:hidden}
+body.is-loading .site-nav,
+body.is-loading #main,
+body.is-loading .site-foot,
+body.is-loading .to-top,
+body.is-loading .mobile-panel{opacity:0;pointer-events:none}
+.imex-loader{position:fixed;inset:0;z-index:12000;display:grid;place-items:center;background:#050814;color:#fff;overflow:hidden}
+.imex-loader.is-done{pointer-events:none}
+.imex-loader-veil{position:absolute;inset:0;background:
+  radial-gradient(720px 420px at 50% 42%,rgba(0,173,239,.18),transparent 58%),
+  radial-gradient(900px 500px at 18% 110%,rgba(46,49,146,.28),transparent 55%),
+  #050814}
+.imex-loader-stage{position:relative;z-index:1;width:min(720px,calc(100% - 48px));display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px}
+.imex-loader-route{width:min(640px,100%);height:auto;overflow:visible}
+.imex-loader-lane{fill:none;stroke:rgba(255,255,255,.14);stroke-width:2;stroke-dasharray:5 8;stroke-linecap:round}
+.imex-loader-lane-draw{fill:none;stroke:#00ADEF;stroke-width:2.6;stroke-linecap:round;stroke-dasharray:800;stroke-dashoffset:800}
+.imex-loader-node{fill:#050814;stroke:#00ADEF;stroke-width:2;opacity:0}
+.imex-loader-box{opacity:0;transform-box:view-box;transform-origin:0 0}
+.imex-loader-box rect:first-child{fill:#00ADEF}
+.imex-loader-box rect:not(:first-child){fill:#fff}
+.imex-loader-brand{display:flex;gap:.04em;font-family:var(--font);font-weight:800;font-size:clamp(52px,12vw,96px);letter-spacing:-.06em;line-height:.9;overflow:hidden}
+.imex-loader-letter{display:inline-block;opacity:0}
+.imex-loader-letter-im{color:#00ADEF}
+.imex-loader-letter-ex{color:#e8ecff}
+.imex-loader-tag{margin:0;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.55);min-height:1.2em}
+.imex-loader-meter{display:flex;align-items:center;gap:14px;width:min(280px,70vw);margin-top:6px}
+.imex-loader-bar{flex:1;height:2px;background:rgba(255,255,255,.12);border-radius:2px;overflow:hidden}
+.imex-loader-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#00ADEF,#fff);border-radius:2px}
+.imex-loader-pct{font-family:var(--font);font-size:13px;font-weight:700;letter-spacing:.08em;color:#00ADEF;min-width:3ch;text-align:right}
+@media (prefers-reduced-motion:reduce){
+  .imex-loader{transition:none}
+}
+
+/* Page overlay transitions */
+.vt-overlay{position:fixed;inset:0;z-index:10000;pointer-events:none;overflow:hidden}
+.vt-wipe{position:absolute;inset:0;background:linear-gradient(90deg,var(--navy),var(--cyan));clip-path:inset(0 100% 0 0)}
+.vt-route{position:absolute;left:-20%;top:50%;width:140%;height:3px;background:linear-gradient(90deg,transparent,var(--cyan),var(--white),var(--cyan),transparent);transform:scaleX(0);transform-origin:left}
+.vt-zoom{position:absolute;inset:18% 28%;border:2px solid var(--cyan);background:rgba(7,11,24,.55);transform:scale(.2);opacity:0}
+.vt-frag{position:absolute;inset:0;display:grid;grid-template-columns:repeat(6,1fr)}
+.vt-frag span{background:var(--deep);transform:translateY(-110%)}
+.vt-overlay.is-idle{opacity:0!important;visibility:hidden!important;pointer-events:none}
+@supports (view-transition-name: none) {
+  html { view-transition-name: none; }
+}
+
+/* Nav */
+.site-nav{position:fixed;top:18px;left:50%;transform:translateX(-50%);width:min(1240px,calc(100% - 28px));z-index:80;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:10px 16px 10px 18px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(7,11,24,.28);backdrop-filter:blur(18px);transition:background .35s,border-color .35s,box-shadow .35s}
+.site-nav.scrolled{background:rgba(255,255,255,.94);border-color:rgba(46,49,146,.12);box-shadow:0 12px 40px rgba(46,49,146,.12)}
+.site-nav.scrolled .nav-links>li>a,.site-nav.scrolled .nav-links>li>button,.site-nav.scrolled .nav-toggle{color:var(--ink)}
+.logo{display:flex;align-items:center;flex:0 0 auto}
+.logo img{height:42px;width:auto}
+.nav-links{display:flex;align-items:center;gap:0;list-style:none;flex-wrap:nowrap}
+.nav-links>li>a,.nav-links>li>button{position:relative;display:inline-flex;align-items:center;gap:6px;padding:10px 9px;background:none;border:0;color:#fff;font-family:var(--font);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.nav-links>li>a::after,.nav-links>li>button::after{content:"";position:absolute;left:12px;right:12px;bottom:6px;height:2px;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+.nav-links>li>a:hover::after,.nav-links>li>a.is-active::after,.nav-links>li>button:hover::after,.nav-links>li.open>button::after{transform:scaleX(1)}
+.nav-cta{margin-left:8px;padding:10px 16px!important;border-radius:999px!important;background:var(--cyan);color:#fff!important}
+.nav-cta::after{display:none!important}
+.drop{position:relative}
+.drop-menu{position:absolute;top:calc(100% + 14px);left:0;min-width:280px;padding:10px;border-radius:18px;background:rgba(7,11,24,.96);border:1px solid rgba(0,173,239,.25);opacity:0;visibility:hidden;transform:translateY(10px);transition:.28s var(--ease),background .35s,border-color .35s,box-shadow .35s;list-style:none;z-index:120}
+.drop.open .drop-menu,.drop:hover .drop-menu{opacity:1;visibility:visible;transform:none}
+.drop-menu a{display:block;padding:10px 12px;border-radius:10px;color:#fff;font-family:var(--font);font-size:13px;font-weight:600;letter-spacing:.01em;line-height:1.35;text-transform:none}
+.drop-menu a:hover,.drop-menu a.is-active{background:rgba(0,173,239,.16);color:var(--cyan)}
+.site-nav.scrolled .drop-menu{background:#fff;border-color:rgba(46,49,146,.12);box-shadow:0 18px 44px rgba(18,28,64,.16)}
+.site-nav.scrolled .drop-menu a{color:#1b2559}
+.site-nav.scrolled .drop-menu a:hover,.site-nav.scrolled .drop-menu a.is-active{background:rgba(0,173,239,.1);color:var(--navy)}
+.nav-toggle{display:none;width:46px;height:46px;border:0;border-radius:50%;background:transparent;color:#fff;cursor:pointer}
+.nav-toggle span{display:block;width:18px;height:2px;margin:5px auto;background:currentColor;transition:.3s}
+.mobile-panel{display:none}
+
+/* Buttons */
+.btn{position:relative;display:inline-flex;align-items:center;gap:10px;padding:16px 26px;border-radius:999px;border:0;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;overflow:hidden;transition:transform .3s var(--ease),box-shadow .3s}
+.btn-cyan{background:var(--cyan);color:#fff}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.28)}
+.btn-ink{background:var(--ink);color:#fff}
+.btn .arr{transition:transform .3s var(--ease)}
+.btn:hover .arr{transform:translateX(6px)}
+.magnetic{will-change:transform}
+
+/* Layout */
+.wrap{width:min(1240px,calc(100% - 40px));margin:0 auto}
+.section{position:relative;padding:120px 0;overflow:hidden}
+.kicker{font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--cyan)}
+.display{font-family:var(--font);font-weight:800;letter-spacing:-.04em;line-height:.92;text-transform:uppercase}
+.lede{font-size:18px;line-height:1.7;color:rgba(255,255,255,.78);max-width:58ch}
+.muted{color:var(--muted)}
+.ink{color:var(--ink)}
+.light{background:var(--white);color:var(--ink)}
+.light .lede{color:var(--body)}
+.paper{background:var(--paper);color:var(--ink)}
+.navy{background:var(--navy)}
+.giant{font-family:var(--font);font-weight:800;font-size:clamp(80px,18vw,240px);line-height:.8;letter-spacing:-.06em;color:rgba(0,173,239,.12);user-select:none}
+.split span{display:inline-block;will-change:transform,opacity}
+.clip{overflow:hidden}
+.route{stroke:var(--cyan);fill:none;stroke-width:2;stroke-dasharray:8 10}
+.grid-asym{display:grid;gap:32px}
+.img-clip{position:relative;overflow:hidden;border-radius:var(--radius)}
+.img-clip img{width:100%;height:100%;object-fit:cover;transform:scale(1.08)}
+.overlay-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,11,24,.15),rgba(7,11,24,.82))}
+
+/* Hero */
+.hero{position:relative;min-height:100vh;display:grid;place-items:stretch;overflow:hidden}
+.hero > .hero-canvas, .scene-frame > canvas{position:absolute;inset:0;width:100%!important;height:100%!important;display:block}
+canvas[data-scene]{display:block;width:100%;height:100%}
+.scene-frame{position:relative;min-height:420px;overflow:hidden}
+.hero-copy{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;padding:140px 0 80px;width:min(1240px,calc(100% - 40px));margin:0 auto}
+.hero h1{overflow:hidden;font-size:clamp(36px,6.4vw,86px);max-width:14ch}
+.hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
+.intro-line{position:absolute;top:50%;left:0;height:2px;width:0;background:var(--cyan);z-index:3}
+.webgl-fallback{position:absolute;inset:0;background:
+  radial-gradient(circle at 70% 40%,rgba(0,173,239,.28),transparent 40%),
+  radial-gradient(circle at 20% 80%,rgba(46,49,146,.5),transparent 42%),
+  var(--deep);display:none}
+.no-webgl .webgl-fallback{display:block}
+
+/* Services rail */
+.rail-pin{height:100vh;overflow:hidden;position:relative;background:var(--deep);z-index:2}
+.rail{display:flex;height:100%;will-change:transform}
+.rail-panel{position:relative;flex:0 0 100vw;width:100vw;height:100%;display:grid;grid-template-columns:minmax(280px,.92fr) 1.08fr;gap:0;align-items:stretch;min-width:0}
+.rail-copy{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:120px 40px 64px clamp(24px,4vw,72px);max-width:640px}
+.rail-panel h3{font-size:clamp(28px,4.4vw,64px);max-width:16ch;line-height:.9}
+.rail-visual{position:relative;height:100%;min-height:0;overflow:hidden}
+.rail-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.06)}
+.rail-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--deep) 0%,rgba(7,11,24,.35) 28%,transparent 58%),linear-gradient(180deg,rgba(7,11,24,.2) 0%,transparent 28%,rgba(7,11,24,.45) 100%);pointer-events:none}
+.rail-end{grid-template-columns:1fr;place-items:center;background:radial-gradient(800px 480px at 70% 40%,rgba(0,173,239,.16),transparent 55%),var(--deep)}
+.rail-end .rail-copy{max-width:16ch;padding:120px 40px;justify-content:center;text-align:center;align-items:center}
+
+/* Process */
+.process{display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative}
+.process-line{position:absolute;top:48px;left:8%;right:8%;height:2px;background:rgba(0,173,239,.25)}
+.process-line i{display:block;height:100%;width:0;background:var(--cyan)}
+.process article{padding:0 24px;position:relative;z-index:1}
+.process .num{font-family:var(--font);font-size:64px;font-weight:800;color:var(--cyan);line-height:1}
+
+/* Footer */
+.site-foot{position:relative;background:#050814;color:rgba(255,255,255,.72);overflow:hidden}
+.foot-horizon{height:2px;background:linear-gradient(90deg,transparent 0%,var(--cyan) 18%,#fff 50%,var(--cyan) 82%,transparent 100%);transform-origin:left center}
+.foot-mast{display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:32px;row-gap:10px;padding:64px 0 32px}
+.foot-logo{display:inline-flex;grid-column:1;grid-row:1}
+.foot-logo img{height:48px;width:auto}
+.foot-mast .btn{grid-column:2;grid-row:1;justify-self:end}
+.foot-ident{grid-column:1/-1}
+.foot-title{margin-top:6px;font-size:clamp(34px,5.2vw,58px);color:#fff;max-width:12ch}
+.foot-legalname{margin-top:8px;font-family:var(--font);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.42)}
+.foot-rule{height:1px;background:linear-gradient(90deg,rgba(0,173,239,.4),rgba(255,255,255,.1) 42%,transparent);margin:0 0 48px}
+.foot-body{display:grid;grid-template-columns:1.25fr .9fr 1.15fr;gap:48px 36px;padding-bottom:56px;align-items:start}
+.site-foot h3{font-family:var(--font);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:18px}
+.foot-col a{display:block;padding:6px 0;color:rgba(255,255,255,.7);font-family:var(--font);font-size:14px;font-weight:500;line-height:1.35;transition:color .25s,transform .25s var(--ease)}
+.foot-col a:hover{color:#fff;transform:translateX(4px)}
+.foot-desk{font-style:normal;padding-left:22px;border-left:2px solid var(--cyan)}
+.foot-desk p{color:#fff;font-family:var(--font);font-size:15px;font-weight:500;line-height:1.55;margin-bottom:16px}
+.foot-desk>a{display:flex;gap:14px;align-items:baseline;padding:7px 0;color:rgba(255,255,255,.82);font-family:var(--font);font-size:15px}
+.foot-desk>a span{flex:0 0 58px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.38)}
+.foot-desk>a:hover{color:var(--cyan)}
+.foot-social{display:flex;gap:10px;margin-top:20px}
+.foot-social a{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;border:1px solid rgba(255,255,255,.16);border-radius:50%;color:#fff;transition:border-color .25s,color .25s,background .25s}
+.foot-social a:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,173,239,.08)}
+.foot-social svg{width:16px;height:16px;display:block}
+.foot-tools{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08)}
+.foot-tools a{display:inline;padding:0;font-size:13px;color:rgba(255,255,255,.48)}
+.foot-tools a:hover{color:var(--cyan);transform:none}
+.foot-bottom{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 72px 28px 0;border-top:1px solid rgba(255,255,255,.08);font-size:13px;color:var(--muted)}
+.foot-bottom a{color:inherit}
+.foot-bottom a:hover{color:var(--cyan)}
+
+/* Forms */
+.field{position:relative;margin-bottom:22px}
+.field input,.field select,.field textarea{width:100%;padding:22px 16px 10px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font-size:15px}
+.field label{position:absolute;left:16px;top:16px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);pointer-events:none;transition:.2s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 4px rgba(0,173,239,.15)}
+.field input:focus+label,.field input:not(:placeholder-shown)+label,.field select:focus+label,.field select:valid+label{top:6px;font-size:10px;color:var(--navy)}
+.field.error input,.field.error select{border-color:#c0392b}
+.field .err{display:none;margin-top:6px;color:#c0392b;font-size:12px}
+.field.error .err{display:block}
+.form-status{margin-top:14px;font-size:14px;color:var(--navy)}
+.contact-card{padding:28px;border-radius:20px;border:1px solid var(--line);margin-bottom:16px}
+.track-box{max-width:640px;margin:0 auto;padding:40px;border-radius:24px;background:rgba(255,255,255,.04);border:1px solid rgba(0,173,239,.25)}
+.track-box input{width:100%;padding:16px 18px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:transparent;color:#fff;margin:18px 0}
+
+/* Related */
+.related-sec{background:var(--navy);overflow:hidden}
+.related-title{font-size:clamp(28px,4vw,44px);max-width:14ch;margin:10px 0 28px;line-height:.95}
+.related{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.rel-card{position:relative;display:block;min-height:220px;border-radius:20px;overflow:hidden;color:#fff;isolation:isolate}
+.rel-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.04);transition:transform .55s var(--ease)}
+.rel-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,11,24,.12) 20%,rgba(7,11,24,.82) 100%)}
+.rel-card-copy{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;height:100%;min-height:220px;padding:22px 24px}
+.rel-card strong{font-family:var(--font);font-size:clamp(18px,1.6vw,24px);font-weight:700;letter-spacing:-.03em;line-height:1.15;max-width:16ch}
+.rel-card .arr{flex:0 0 auto;font-size:20px}
+@media (hover:hover) and (pointer:fine){
+  .rel-card:hover img{transform:scale(1.08)}
+}
+.pager{display:flex;justify-content:space-between;gap:16px;margin-top:36px;flex-wrap:wrap}
+.pager-link{display:flex;flex-direction:column;gap:4px;max-width:min(48%,420px);color:#fff;text-decoration:none}
+.pager-link span{font-family:var(--font);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan)}
+.pager-link strong{font-family:var(--font);font-size:clamp(16px,1.6vw,22px);font-weight:700;line-height:1.2}
+.pager-next{text-align:right;margin-left:auto}
+.quote-cta-band{padding:72px 0;background:var(--deep)}
+.quote-cta-row{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.quote-cta-row h2{font-size:clamp(26px,3.6vw,40px);margin:0;max-width:16ch}
+
+/* Misc */
+.stat-row{display:flex;gap:28px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(0,173,239,.35);border-radius:999px;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.to-top{position:fixed;right:18px;bottom:18px;width:46px;height:46px;border-radius:50%;border:0;background:var(--cyan);color:#fff;cursor:pointer;z-index:40;opacity:0;pointer-events:none;transition:.3s}
+.to-top.show{opacity:1;pointer-events:auto}
+.scan-line{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);animation:scan 3.4s linear infinite}
+@keyframes scan{from{top:8%}to{top:92%}}
+
+@media (max-width:1080px){
+  .nav-links{display:none}
+  .site-nav{gap:10px;justify-content:flex-start}
+  .logo img{height:36px}
+  .nav-cta{margin-left:auto;padding:9px 14px!important;font-size:11px;letter-spacing:.12em;flex:0 0 auto;white-space:nowrap;box-shadow:0 8px 20px rgba(0,173,239,.28)}
+  .nav-toggle{display:inline-flex;align-items:center;justify-content:center;flex-direction:column;flex:0 0 auto;width:42px;height:42px;margin-left:2px}
+  .mobile-panel{display:block;position:fixed;inset:0;background:rgba(7,11,24,.97);z-index:70;padding:110px 28px 40px;transform:translateX(100%);transition:transform .45s var(--ease);overflow:auto}
+  body.nav-open .mobile-panel{transform:none}
+  .mobile-panel a,.mobile-panel button{display:block;width:100%;text-align:left;background:none;border:0;color:#fff;padding:12px 0;font-family:var(--font);font-size:22px;font-weight:700}
+  .mobile-panel .sub a{font-size:16px;font-weight:500;color:rgba(255,255,255,.72);padding-left:12px}
+  .rail-panel{flex-basis:100vw;width:100vw;grid-template-columns:1fr;grid-template-rows:1fr 42vh}
+  .rail-copy{padding:110px 24px 28px;max-width:none;justify-content:flex-end}
+  .rail-visual{min-height:0;height:auto;grid-row:2}
+  .rail-visual::after{background:linear-gradient(180deg,rgba(7,11,24,.15),transparent 30%,rgba(7,11,24,.55))}
+  .rail-end{min-height:100vh}
+  .rail-end .rail-copy{padding:120px 24px}
+  .foot-body{grid-template-columns:1fr 1fr;gap:36px 28px}
+  .foot-desk{grid-column:1/-1;padding-left:18px}
+  .process{grid-template-columns:1fr;gap:32px}
+  .process-line{display:none}
+}
+@media (max-width:720px){
+  .hero-copy{padding:120px 0 56px}
+  .section{padding:80px 0}
+  .foot-mast{grid-template-columns:1fr;padding:56px 0 28px}
+  .foot-mast .btn{grid-column:1;grid-row:auto;justify-self:start}
+  .foot-body{grid-template-columns:1fr;padding-bottom:36px}
+  .foot-desk{grid-column:auto}
+  .foot-bottom{flex-direction:column;gap:8px;padding:20px 0 72px}
+  .related{grid-template-columns:1fr}
+  .site-nav{top:10px;width:calc(100% - 16px);padding:7px 8px 7px 12px;gap:8px;min-height:56px}
+  .logo{min-width:0}
+  .logo img{height:30px}
+  .nav-cta{padding:8px 12px!important;font-size:10px;letter-spacing:.1em;max-width:42vw;overflow:hidden;text-overflow:ellipsis}
+  .nav-toggle{width:40px;height:40px}
+}
+@media (max-width:380px){
+  .nav-cta{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .cursor,.cursor-dot{display:none}
+  .rail-pin{height:auto;overflow:visible}
+  .rail{flex-wrap:wrap;transform:none!important;height:auto}
+  .rail-panel{flex-basis:100%;width:100%;height:auto;min-height:100vh}
+  .rail-visual{height:50vh;min-height:280px}
+}
+
+
+.home-about{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+.year-mask{font-size:clamp(90px,16vw,220px);font-weight:800;line-height:.8;color:transparent;-webkit-text-stroke:1px rgba(46,49,146,.35)}
+.hero-stack{position:relative}
+.hero-film{position:sticky;top:0;height:100vh;z-index:1;will-change:transform}
+.hero-film-track{height:320vh;pointer-events:none}
+@media (prefers-reduced-motion: reduce){
+  .hero-film{position:relative}
+  .hero-film-track{display:none;height:0}
+  .story-band{border-radius:0;box-shadow:none}
+}
+.story-band{position:relative;z-index:3;overflow:hidden;background:linear-gradient(180deg,#f4f8fd 0%,#eaf2f8 100%);min-height:680px;border-radius:40px 40px 0 0;box-shadow:0 -32px 90px rgba(7,11,24,.38)}
+.story-copy{position:relative;z-index:3;width:min(620px,46vw);margin-left:max(24px,calc((100vw - 1240px)/2));padding:96px 32px 88px 0;will-change:transform}
+.story-year{font-family:var(--font);font-size:clamp(96px,13vw,176px);font-weight:800;line-height:.72;letter-spacing:-.06em;color:transparent;-webkit-text-stroke:2px rgba(0,173,239,.42);margin:0 0 -8px}
+.story-title{position:relative;font-size:clamp(34px,4.4vw,58px);color:#1b2559;margin:0 0 14px}
+.story-title span{color:#00ADEF}
+.story-mark{position:absolute;left:-18px;top:.42em;width:9px;height:9px;background:#00ADEF}
+.story-rule{display:block;width:72px;height:4px;background:#00ADEF;border-radius:4px;margin:0 0 22px}
+.story-copy .lede{color:#4a5568;font-size:16px;line-height:1.7;max-width:54ch}
+.story-copy .lede + .lede{margin-top:14px}
+.story-actions{display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin-top:28px}
+.story-play{display:inline-flex;align-items:center;gap:12px;color:#1b2559;font-family:var(--font);font-size:14px;font-weight:700}
+.story-play i{width:44px;height:44px;border-radius:50%;border:2px solid #00ADEF;display:grid;place-items:center;background:#fff}
+.story-play svg{width:14px;height:14px;margin-left:2px}
+.story-visual{position:absolute;right:0;top:0;bottom:0;width:54%;z-index:1;will-change:transform}
+.story-yard{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:68% 40%}
+.story-slash{position:absolute;left:-1px;top:0;height:100%;width:42%;z-index:2;pointer-events:none}
+.story-truck{position:absolute;left:4%;bottom:16%;width:90%;max-width:640px;z-index:3;filter:drop-shadow(0 28px 36px rgba(10,24,48,.32));pointer-events:none}
+.story-pills{position:absolute;left:10%;bottom:22px;z-index:4;display:flex;gap:10px;flex-wrap:wrap;max-width:86%}
+.story-pill{display:flex;align-items:center;gap:10px;min-height:64px;padding:10px 16px 10px 12px;border-radius:14px;background:rgba(22,28,48,.92);color:#fff;box-shadow:0 12px 28px rgba(8,16,32,.28);backdrop-filter:blur(8px)}
+.story-pill svg{width:28px;height:28px;flex:0 0 28px}
+.story-pill b{display:block;font-family:var(--font);font-size:11px;font-weight:600;letter-spacing:.04em;color:rgba(255,255,255,.7)}
+.story-pill strong{display:block;font-family:var(--font);font-size:13px;font-weight:800;line-height:1.2;margin-top:2px}
+.story-corner{position:absolute;right:0;bottom:0;width:210px;height:160px;z-index:3;pointer-events:none;background:linear-gradient(135deg,transparent 48%,#1d4ed8 48.2%)}
+.story-corner svg{position:absolute;right:8px;bottom:8px;width:120px;opacity:.35}
+.globe-band{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;isolation:isolate}
+.globe-band::before{content:"";position:absolute;inset:12% -8% auto;height:55%;background:radial-gradient(ellipse at 70% 40%,rgba(0,173,239,.16),transparent 62%);pointer-events:none;z-index:0}
+.globe-band-grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;width:min(1280px,calc(100% - 40px));margin:0 auto}
+.globe-copy{max-width:34ch}
+.globe-copy .display{font-size:clamp(40px,6vw,84px)}
+.globe-copy .lede{margin-top:18px}
+.globe-frame{border-radius:28px;border:1px solid rgba(0,173,239,.32);background:
+  radial-gradient(circle at 50% 40%,rgba(0,173,239,.28),transparent 42%),
+  radial-gradient(circle at 50% 55%,#0d1a40 0%,#060a16 75%);
+  box-shadow:inset 0 0 70px rgba(0,173,239,.1),0 28px 64px rgba(0,0,0,.32);overflow:hidden;height:min(70vh,640px);transform-origin:60% 50%;will-change:transform,opacity;perspective:1200px}
+.globe-frame canvas{display:block;width:100%;height:100%}
+@media(max-width:900px){.globe-band{min-height:auto;padding:72px 0}.globe-band-grid{grid-template-columns:1fr;gap:28px}.globe-frame{height:min(58vh,480px)}}
+.vas-band{position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(180deg,#f4f8fd 0%,#e7f1f8 100%);padding:96px 0 0}
+.vas-band::before{content:"";position:absolute;inset:auto 0 0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,173,239,.35),transparent);z-index:3}
+.vas-shell{width:min(1280px,calc(100% - 40px));margin:0 auto;display:grid;grid-template-columns:minmax(260px,.78fr) 1.22fr;gap:28px 40px;align-items:end;min-height:620px}
+.vas-copy{position:relative;z-index:2;padding:0 0 64px;max-width:420px}
+.vas-kicker{display:inline-flex;align-items:center;gap:12px;margin:0 0 16px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:#00ADEF}
+.vas-kicker i{display:block;width:36px;height:2px;background:#00ADEF;border-radius:2px}
+.vas-title{margin:0 0 18px;font-size:clamp(40px,5.4vw,72px);line-height:.88;letter-spacing:-.05em;color:#1b2559}
+.vas-lede{margin:0 0 28px;font-size:16px;line-height:1.7;color:#4a5568;max-width:36ch}
+.vas-copy .btn{box-shadow:0 10px 24px rgba(46,49,146,.16)}
+.vas-stage{position:relative;min-height:560px;border-radius:36px 36px 0 0;overflow:hidden;background:#10183f;box-shadow:0 28px 56px rgba(18,42,84,.14)}
+.vas-media{position:absolute;inset:0}
+.vas-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .55s var(--ease),transform 1.1s var(--ease);filter:saturate(.88) contrast(1.02)}
+.vas-media img.is-on{opacity:1;transform:scale(1)}
+.vas-media::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(7,11,24,.72) 0%,rgba(7,11,24,.28) 42%,rgba(7,11,24,.45) 100%),linear-gradient(180deg,transparent 35%,rgba(7,11,24,.78));pointer-events:none}
+.vas-index{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;height:100%;min-height:560px;padding:48px 28px 28px;max-width:460px}
+.vas-index a{display:grid;grid-template-columns:14px 1fr auto;gap:8px 14px;align-items:center;padding:18px 0;border-top:1px solid rgba(255,255,255,.14);color:#fff;text-decoration:none;transition:color .25s,transform .25s var(--ease)}
+.vas-index a:first-child{border-top:0}
+.vas-index a i{display:block;width:10px;height:10px;border-radius:50%;border:1.5px solid rgba(0,173,239,.55);background:transparent;transition:background .25s,box-shadow .25s}
+.vas-index a strong{font-family:var(--font);font-size:clamp(18px,2vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.vas-index a em{font-style:normal;font-family:var(--font);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.42);justify-self:end}
+.vas-index a.is-on,.vas-index a:hover{color:#fff;transform:translateX(4px)}
+.vas-index a.is-on i,.vas-index a:hover i{background:#00ADEF;box-shadow:0 0 0 5px rgba(0,173,239,.18);border-color:#00ADEF}
+.vas-index a.is-on strong,.vas-index a:hover strong{color:#00ADEF}
+.vas-index a.is-on em,.vas-index a:hover em{color:rgba(255,255,255,.72)}
+.vas-more{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12)}
+.vas-more a{display:inline;padding:0;border:0;transform:none;font-family:var(--font);font-size:13px;font-weight:600;color:rgba(255,255,255,.55)}
+.vas-more a:hover{color:#00ADEF;transform:none}
+.quote-band{position:relative;isolation:isolate;min-height:min(760px,94vh);overflow:hidden;background:
+  radial-gradient(900px 520px at 18% 88%,rgba(0,173,239,.16),transparent 58%),
+  radial-gradient(640px 380px at 72% 8%,rgba(90,140,255,.2),transparent 62%),
+  linear-gradient(118deg,#10183f 0%,#18245e 28%,#24348f 52%,#1a2468 78%,#15205c 100%)}
+.qb-light{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0;pointer-events:none}
+.qb-blobs{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.qb-blob{position:absolute;border-radius:50%;filter:blur(10px)}
+.qb-blob-a{width:46vw;height:46vw;left:-12%;top:-28%;background:radial-gradient(circle,rgba(36,58,160,.55),transparent 68%)}
+.qb-blob-b{width:38vw;height:38vw;left:18%;top:-18%;background:radial-gradient(circle,rgba(14,28,90,.5),transparent 70%)}
+.qb-blob-c{width:28vw;height:28vw;left:8%;bottom:8%;background:radial-gradient(circle,rgba(0,173,239,.14),transparent 70%)}
+.qb-globe{position:absolute;left:-8%;bottom:-18%;width:min(52vw,620px);height:auto;z-index:1;pointer-events:none;opacity:.9}
+.qb-layout{position:relative;z-index:2;display:grid;grid-template-columns:.94fr 1.06fr;align-items:stretch;min-height:min(760px,94vh);width:min(1280px,calc(100% - 48px));margin:0 auto;padding:80px 8px 12px;gap:12px}
+.qb-copy{position:relative;z-index:3;max-width:560px;padding:24px 12px 80px 8px;align-self:center}
+.qb-kicker{display:inline-flex;align-items:center;gap:12px;margin:0 0 18px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:#00ADEF}
+.qb-kicker i{display:block;width:36px;height:2px;background:#00ADEF;border-radius:2px;flex:0 0 36px}
+.qb-title{font-size:clamp(42px,5.6vw,78px);color:#fff;max-width:9ch;line-height:.9;letter-spacing:-.05em;text-shadow:0 8px 28px rgba(8,16,40,.28)}
+.qb-title .qb-line{white-space:nowrap}
+.qb-lede{margin:22px 0 28px;max-width:38ch;color:rgba(255,255,255,.84);font-size:17px;line-height:1.7}
+.qb-cta{box-shadow:0 14px 34px rgba(0,173,239,.4)}
+.qb-cta:active{transform:scale(.97)}
+.qb-flight{position:absolute;left:36%;bottom:14%;width:min(38vw,420px);height:160px;overflow:visible;pointer-events:none;z-index:4;grid-column:1/-1;grid-row:1}
+.qb-dash{fill:none;stroke:rgba(255,255,255,.62);stroke-width:1.7;stroke-dasharray:6 8;stroke-linecap:round}
+.qb-plane{transform-box:fill-box;transform-origin:center}
+.qb-visual{position:relative;height:min(680px,86vh);min-height:560px;margin-right:-24px}
+.qb-frame{position:absolute;left:10%;top:10%;width:76%;height:70%;border-radius:32px;overflow:hidden;transform:rotate(-12deg);z-index:1;border:10px solid rgba(255,255,255,.92);box-shadow:0 32px 64px rgba(16,36,90,.28),0 0 0 1px rgba(0,173,239,.12)}
+.qb-yard{width:100%;height:100%;object-fit:cover;filter:saturate(.7) contrast(1.02);transform:scale(1.14) rotate(12deg)}
+.qb-frame::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.16),transparent 42%,rgba(20,40,90,.18))}
+.qb-orbit{position:absolute;left:2%;top:2%;width:96%;height:96%;z-index:2;pointer-events:none;overflow:visible}
+.qb-ring{fill:none;stroke:#00ADEF;stroke-width:2;opacity:.8}
+.qb-ring-2{opacity:.35;stroke-width:1.3}
+.qb-courier{position:absolute;left:50%;bottom:10px;height:86%;width:auto;max-width:none;z-index:3;filter:drop-shadow(0 22px 28px rgba(12,28,64,.32));pointer-events:none}
+.qb-ground{position:absolute;left:28%;bottom:18px;width:54%;height:28px;border-radius:50%;background:radial-gradient(ellipse,rgba(12,28,64,.28),transparent 70%);z-index:2;pointer-events:none}
+.qb-chip{position:absolute;z-index:4;width:56px;height:56px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 12px 28px rgba(20,48,110,.18);border:1px solid rgba(0,173,239,.18)}
+.qb-chip svg{width:22px;height:22px}
+.qb-chip-box{left:8%;bottom:30%}
+.qb-chip-pin{right:10%;top:18%}
+.track-band{position:relative;overflow:hidden;isolation:isolate;background:radial-gradient(920px 420px at 88% 18%,rgba(0,173,239,.16),transparent 58%),linear-gradient(180deg,#070b18 0%,#0a1024 58%,#070b18 100%);padding:108px 0 96px}
+.track-band::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 72px,rgba(0,173,239,.035) 72px 73px),repeating-linear-gradient(0deg,transparent 0 72px,rgba(0,173,239,.03) 72px 73px);pointer-events:none;mask-image:linear-gradient(180deg,transparent,rgba(0,0,0,.9) 18%,rgba(0,0,0,.9) 82%,transparent);-webkit-mask-image:linear-gradient(180deg,transparent,rgba(0,0,0,.9) 18%,rgba(0,0,0,.9) 82%,transparent)}
+.track-grid{position:relative;z-index:2;width:min(1280px,calc(100% - 40px));margin:0 auto;display:grid;grid-template-columns:minmax(280px,1fr) minmax(280px,.95fr);gap:28px 48px;align-items:center}
+.track-copy{max-width:560px}
+.track-kicker{display:inline-flex;align-items:center;gap:12px;margin:0 0 16px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:#00ADEF}
+.track-kicker i{display:block;width:36px;height:2px;background:#00ADEF;border-radius:2px}
+.track-title{margin:0 0 18px;font-size:clamp(36px,5vw,64px);line-height:.9;letter-spacing:-.05em;color:#fff;max-width:12ch}
+.track-lede{margin:0 0 28px;max-width:40ch;font-size:16px;line-height:1.7;color:rgba(255,255,255,.72)}
+.track-console{display:grid;gap:12px;padding:18px;border-radius:22px;background:rgba(255,255,255,.035);border:1px solid rgba(0,173,239,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.track-console label{font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#00ADEF}
+.track-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:stretch}
+.track-row input{width:100%;min-width:0;padding:16px 18px;border-radius:14px;border:1px solid rgba(255,255,255,.16);background:rgba(7,11,24,.55);color:#fff;font-size:15px;outline:none;transition:border-color .25s,box-shadow .25s}
+.track-row input::placeholder{color:rgba(255,255,255,.38)}
+.track-row input:focus{border-color:var(--cyan);box-shadow:0 0 0 4px rgba(0,173,239,.16)}
+.track-row .btn{white-space:nowrap;box-shadow:0 12px 28px rgba(0,173,239,.28)}
+.track-note{min-height:1.4em;margin:4px 0 0;font-size:13px;color:rgba(255,255,255,.55)}
+.track-open{display:inline-flex;margin-top:4px;align-self:start}
+.track-radar{position:relative;min-height:460px;border-radius:28px;overflow:hidden;background:linear-gradient(160deg,rgba(18,28,68,.9),rgba(8,12,28,.96));border:1px solid rgba(0,173,239,.18);box-shadow:0 28px 64px rgba(0,0,0,.28)}
+.track-radar-svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.track-radar-label{position:absolute;z-index:2;left:22px;top:22px;display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(7,11,24,.55);border:1px solid rgba(0,173,239,.28);font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#fff}
+.track-radar-label b{width:8px;height:8px;border-radius:50%;background:#00ADEF;box-shadow:0 0 0 5px rgba(0,173,239,.2)}
+.track-stops{position:absolute;z-index:2;left:22px;right:22px;bottom:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.track-stops span{display:flex;flex-direction:column;gap:4px;padding:12px 12px 11px;border-radius:14px;background:rgba(7,11,24,.55);border:1px solid rgba(255,255,255,.08);font-family:var(--font)}
+.track-stops strong{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#00ADEF}
+.track-stops em{font-style:normal;font-size:13px;font-weight:600;color:rgba(255,255,255,.82)}
+.track-route{fill:none;stroke:rgba(255,255,255,.22);stroke-width:2;stroke-dasharray:7 9;stroke-linecap:round}
+.track-route-live{fill:none;stroke:#00ADEF;stroke-width:2.4;stroke-linecap:round;stroke-dasharray:420;stroke-dashoffset:420}
+.track-node{fill:#070b18;stroke:#00ADEF;stroke-width:2}
+.track-pulse{fill:rgba(0,173,239,.18);transform-origin:center;transform-box:fill-box}
+.touch-band{position:relative;overflow:hidden;background:linear-gradient(180deg,#eaf6fc 0%,#dceef8 100%);padding:96px 0 0}
+.touch-grid{width:min(1280px,calc(100% - 40px));margin:0 auto;display:grid;grid-template-columns:minmax(280px,.92fr) 1.08fr;gap:28px 40px;align-items:end;min-height:560px}
+.touch-copy{position:relative;z-index:2;padding:0 0 64px}
+.touch-kicker{display:inline-flex;align-items:center;gap:12px;margin:0 0 16px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:#00ADEF}
+.touch-kicker i{display:block;width:36px;height:2px;background:#00ADEF;border-radius:2px}
+.touch-title{margin:0 0 22px;font-size:clamp(48px,6.4vw,88px);line-height:.86;letter-spacing:-.055em;color:#1b2559}
+.touch-addr{margin:0 0 28px;max-width:36ch;font-size:16px;line-height:1.7;color:#4a5568}
+.touch-copy .btn{box-shadow:0 10px 24px rgba(46,49,146,.18)}
+.touch-plate{position:relative;min-height:520px;border-radius:36px 36px 0 0;overflow:hidden;background:linear-gradient(160deg,#15205c 0%,#1a2468 48%,#10183f 100%);color:#fff;box-shadow:0 28px 56px rgba(18,42,84,.16)}
+.touch-map{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.42;filter:invert(1) sepia(1) saturate(6) hue-rotate(166deg) brightness(.9);pointer-events:none}
+.touch-plate::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,24,63,.15),rgba(16,24,63,.72) 70%);pointer-events:none}
+.touch-pin{position:absolute;z-index:2;left:70%;top:22%;width:16px;height:16px;border-radius:50%;background:#00ADEF;box-shadow:0 0 0 10px rgba(0,173,239,.22),0 8px 18px rgba(0,173,239,.35)}
+.touch-pin::after{content:"";position:absolute;left:50%;top:14px;width:2px;height:14px;background:#00ADEF;transform:translateX(-50%)}
+.touch-lines{position:relative;z-index:3;display:flex;flex-direction:column;gap:0;padding:220px 28px 28px}
+.touch-lines a{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;border-top:1px solid rgba(255,255,255,.12);color:#fff;text-decoration:none}
+.touch-lines a:hover b{color:#00ADEF}
+.touch-lines a span{font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#00ADEF}
+.touch-lines a b{font-family:var(--font);font-size:15px;font-weight:600;letter-spacing:-.02em}
+.touch-desks{position:relative;z-index:3;display:flex;gap:10px;padding:0 28px 28px;flex-wrap:wrap}
+.touch-desks a{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(0,173,239,.28);color:#fff;font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.touch-desks a:hover{background:rgba(0,173,239,.18)}
+.hero-film{height:100vh}
+.hero-film-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;background:#070b18}
+.hero-film-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(7,11,24,.4) 0%,rgba(7,11,24,.06) 32%,rgba(7,11,24,.16) 56%,rgba(7,11,24,.9) 100%)}
+.hero-film-progress{position:absolute;left:0;bottom:0;height:3px;width:0;background:#00ADEF;z-index:3}
+.hero-film .hero-copy{z-index:2;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(200px,.7fr);align-items:end;align-content:end;gap:24px 56px;width:min(1280px,calc(100% - 48px));height:100%;padding:0 0 56px;margin:0 auto}
+.hero-film .hero-title-block{max-width:min(920px,100%)}
+.hero-film .hero-lead{font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:.34em;text-transform:uppercase;color:var(--cyan);margin:0 0 16px}
+.hero-film h1{overflow:visible;font-size:clamp(48px,7.6vw,96px);max-width:14ch;line-height:.84;letter-spacing:-.055em}
+.hero-film .hero-line{display:block;overflow:hidden}
+.hero-film .hero-line>span{display:block}
+.hero-film .hero-sub{margin:16px 0 0;font-family:var(--font-b);font-size:clamp(16px,1.7vw,21px);font-weight:400;letter-spacing:.02em;line-height:1.4;color:rgba(255,255,255,.9);text-transform:none;max-width:28ch;text-shadow:0 2px 18px rgba(7,11,24,.55)}
+.hero-film .hero-actions{margin-top:26px}
+.hero-film .hero-aside{justify-self:end;max-width:32ch;padding:0 0 8px 22px;border-left:2px solid #00ADEF}
+.hero-film .hero-aside .lede{margin:0;font-size:15px;line-height:1.65;color:rgba(255,255,255,.92);max-width:none;text-shadow:0 2px 18px rgba(7,11,24,.65)}
+.how-band{position:relative;overflow:hidden;isolation:isolate;background:radial-gradient(900px 420px at 86% 8%,rgba(0,173,239,.18),transparent 62%),linear-gradient(180deg,#eaf6fc 0%,#d8eef8 52%,#cfe8f5 100%);padding:92px 0 0}
+.how-grid{width:min(1280px,calc(100% - 40px));margin:0 auto;display:grid;grid-template-columns:minmax(280px,.9fr) 1.2fr;gap:20px 36px;align-items:end;min-height:620px}
+.how-copy{position:relative;z-index:2;padding:0 0 56px}
+.how-kicker{display:inline-flex;align-items:center;gap:12px;margin:0 0 16px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:#00ADEF}
+.how-kicker i{display:block;width:36px;height:2px;background:#00ADEF;border-radius:2px}
+.how-title{margin:0 0 28px;font-size:clamp(46px,6.2vw,82px);line-height:.86;letter-spacing:-.055em}
+.how-title span{display:block;color:transparent;-webkit-text-stroke:1.5px rgba(27,37,89,.28);paint-order:stroke fill;transition:color .35s ease,-webkit-text-stroke .35s ease}
+.how-title span.is-on{color:#1b2559;-webkit-text-stroke:0}
+.how-title span[data-step="1"].is-on{color:#00ADEF}
+.how-log{list-style:none;display:flex;flex-direction:column;max-width:38ch;margin:0 0 28px}
+.how-log li{display:grid;grid-template-columns:48px 1fr;gap:4px 12px;padding:14px 0;border-top:1px solid rgba(27,37,89,.12);opacity:.52;transition:opacity .35s ease}
+.how-log li.is-on{opacity:1;transform:none}
+.how-log b{grid-row:1/3;font-family:var(--font);font-size:26px;font-weight:800;color:#00ADEF;line-height:1;padding-top:2px}
+.how-log h3{margin:0;font-family:var(--font);font-size:18px;font-weight:700;color:#1b2559;letter-spacing:-.02em}
+.how-log p{margin:0;font-size:14px;line-height:1.5;color:#4a5568}
+.how-copy .btn{box-shadow:0 10px 24px rgba(46,49,146,.18)}
+.how-dock{position:relative;height:min(600px,76vh);min-height:500px;z-index:1}
+.how-slab{position:absolute;inset:auto 0 0 auto;width:min(100%,760px);height:92%;border-radius:36px 36px 0 0;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(232,246,255,.2) 38%,rgba(210,232,246,.35)),repeating-linear-gradient(90deg,transparent 0 46px,rgba(0,173,239,.08) 46px 47px),repeating-linear-gradient(0deg,transparent 0 46px,rgba(0,173,239,.08) 46px 47px);box-shadow:0 28px 56px rgba(18,42,84,.14)}
+.how-asphalt{position:absolute;left:-10%;right:-12%;bottom:22%;height:108px;background:linear-gradient(180deg,#243056,#151c38 55%,#10162c);transform:rotate(-4.5deg);box-shadow:0 18px 32px rgba(10,20,40,.28)}
+.how-asphalt::after{content:"";position:absolute;inset:10px 0 auto;height:8px;background:repeating-linear-gradient(90deg,#00ADEF 0 18px,transparent 18px 34px);opacity:.35}
+.how-fill{display:block;position:absolute;left:6%;top:50%;height:3px;width:78%;margin-top:-1px;background:#00ADEF;transform:scaleX(0);transform-origin:left center;will-change:transform;z-index:1}
+.how-dash{display:block;position:absolute;left:6%;right:10%;top:50%;height:0;border-top:3px dashed rgba(255,255,255,.28);transform:translateY(-50%)}
+.how-post{position:absolute;bottom:calc(22% + 86px);width:12px;height:54px;margin-left:-6px;background:#00ADEF;border-radius:3px 3px 0 0;box-shadow:0 8px 16px rgba(0,173,239,.28);z-index:2}
+.how-post:nth-child(1){left:16%}
+.how-post:nth-child(2){left:48%}
+.how-post:nth-child(3){left:78%}
+.how-post b{position:absolute;top:-30px;left:50%;transform:translateX(-50%);font-family:var(--font);font-size:13px;font-weight:800;color:#1b2559;letter-spacing:.04em}
+.how-post.is-on{height:64px;background:#00ADEF}
+.how-van-wrap{position:absolute;left:2%;bottom:10%;width:66%;max-width:580px;z-index:3;will-change:transform;pointer-events:none}
+.how-van-wrap img{width:100%;height:auto;max-width:none;display:block;transform:rotate(-4.5deg);transform-origin:50% 92%;filter:drop-shadow(0 14px 12px rgba(10,24,48,.34))}
+.how-flag{position:absolute;top:18px;right:18px;z-index:4;display:flex;align-items:center;gap:8px;padding:8px 12px 8px 10px;border-radius:999px;background:#fff;color:#1b2559;font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 10px 24px rgba(20,40,80,.16)}
+.how-flag i{width:8px;height:8px;border-radius:50%;background:#00ADEF;box-shadow:0 0 0 4px rgba(0,173,239,.2)}
+@media(max-width:900px){
+  .home-about{grid-template-columns:1fr}
+  .hero-film-track{height:220vh}
+  .story-band{border-radius:28px 28px 0 0}
+  .story-copy{width:auto;margin:0;padding:72px 20px 24px}
+  .story-visual{position:relative;width:100%;height:460px;bottom:auto}
+  .story-slash{display:none}
+  .story-truck{width:92%;left:4%;bottom:22%}
+  .story-pills{left:16px;right:16px;max-width:none}
+  .story-corner{width:140px;height:110px}
+  .hero-film-scrim{background:linear-gradient(180deg,rgba(7,11,24,.58) 0%,rgba(7,11,24,.18) 26%,rgba(7,11,24,.42) 48%,rgba(7,11,24,.9) 72%,rgba(7,11,24,.96) 100%)}
+  .hero-film .hero-copy{grid-template-columns:1fr;align-content:end;align-items:stretch;gap:18px;width:calc(100% - 40px);max-width:520px;margin:0 auto;padding:96px 0 max(24px,env(safe-area-inset-bottom,0px));box-sizing:border-box}
+  .hero-film .hero-title-block{max-width:none}
+  .hero-film .hero-lead{font-size:10px;letter-spacing:.2em;margin:0 0 10px}
+  .hero-film h1{font-size:clamp(34px,10.5vw,48px);line-height:.9;letter-spacing:-.045em;max-width:12ch}
+  .hero-film .hero-sub{margin:12px 0 0;font-size:15px;line-height:1.45;max-width:26ch}
+  .hero-film .hero-actions{margin-top:18px;flex-direction:column;align-items:stretch;gap:10px;max-width:300px}
+  .hero-film .hero-actions .btn{justify-content:center;width:100%;padding:14px 18px;font-size:11px;letter-spacing:.14em}
+  .hero-film .hero-aside{justify-self:stretch;border-left:0;padding:14px 0 0;margin:2px 0 0;max-width:none;border-top:1px solid rgba(0,173,239,.4)}
+  .hero-film .hero-aside .lede{font-size:13.5px;line-height:1.55;color:rgba(255,255,255,.86);text-shadow:0 2px 14px rgba(7,11,24,.7)}
+  .how-grid{grid-template-columns:1fr;min-height:0}
+  .how-copy{padding:0 0 8px}
+  .how-title{font-size:clamp(42px,12vw,64px)}
+  .how-dock{height:420px;min-height:400px}
+  .how-slab{width:100%;height:100%;border-radius:28px 28px 0 0}
+  .how-van-wrap{width:84%;max-width:none;bottom:8%;left:-2%}
+  .how-asphalt{bottom:18%;height:86px}
+  .touch-grid{grid-template-columns:1fr;min-height:0;gap:8px}
+  .touch-copy{padding:0 0 12px}
+  .touch-plate{min-height:400px;border-radius:28px 28px 0 0}
+  .touch-lines{padding-top:92px}
+  .touch-pin{left:78%;top:14%}
+  .touch-lines a{flex-direction:column;align-items:flex-start;gap:4px}
+  .qb-light{clip-path:inset(38% 0 0 0)}
+  .qb-layout{grid-template-columns:1fr;padding:88px 4px 0;min-height:0;gap:0}
+  .qb-copy{padding:0 8px 12px;max-width:none;z-index:3}
+  .qb-title{max-width:none}
+  .qb-title .qb-line{white-space:normal}
+  .qb-visual{height:520px;min-height:500px;margin-right:0}
+  .qb-flight{left:18px;bottom:auto;top:auto;position:relative;width:min(88vw,340px);height:90px;margin:8px 0 0}
+  .qb-globe{width:90vw;opacity:.4;bottom:-8%;left:-18%}
+  .qb-courier{height:92%;left:52%}
+  .track-band{padding:84px 0 72px}
+  .track-grid{grid-template-columns:1fr;gap:22px}
+  .track-title{max-width:none}
+  .track-row{grid-template-columns:1fr}
+  .track-radar{min-height:360px}
+  .track-stops{grid-template-columns:1fr;gap:8px}
+  .vas-shell{grid-template-columns:1fr;min-height:0;gap:12px}
+  .vas-copy{padding:0 0 12px;max-width:none}
+  .vas-stage{min-height:520px;border-radius:28px 28px 0 0}
+  .vas-index{min-height:520px;padding:36px 20px 22px;max-width:none}
+}
+@media(max-width:720px){
+  .hero-film .hero-copy{width:calc(100% - 36px);gap:16px;padding:88px 0 max(20px,env(safe-area-inset-bottom,0px))}
+  .hero-film .hero-lead{letter-spacing:.16em}
+  .hero-film h1{font-size:clamp(32px,9.8vw,42px);max-width:11ch}
+  .hero-film .hero-sub{font-size:14px;max-width:22ch}
+  .hero-film .hero-actions{max-width:none}
+  .hero-film .hero-aside .lede{font-size:13px;line-height:1.5}
+}
+
+  </style>
+</head>
+<body data-page="home" class="is-loading">
+
+<a class="skip" href="#main">Skip to content</a>
+<div class="cursor"></div><div class="cursor-dot"></div>
+<div class="imex-loader" id="imexLoader" role="status" aria-live="polite" aria-busy="true" aria-label="Loading IMEX">
+  <div class="imex-loader-veil" aria-hidden="true"></div>
+  <div class="imex-loader-stage">
+    <svg class="imex-loader-route" viewBox="0 0 720 220" aria-hidden="true">
+      <path class="imex-loader-lane" d="M48 168 C140 168 170 52 260 52 C350 52 380 168 470 168 C560 168 590 72 672 72"/>
+      <path class="imex-loader-lane-draw" d="M48 168 C140 168 170 52 260 52 C350 52 380 168 470 168 C560 168 590 72 672 72"/>
+      <circle class="imex-loader-node" cx="48" cy="168" r="5"/>
+      <circle class="imex-loader-node" cx="260" cy="52" r="5"/>
+      <circle class="imex-loader-node" cx="470" cy="168" r="5"/>
+      <circle class="imex-loader-node" cx="672" cy="72" r="6"/>
+      <g class="imex-loader-box" transform="translate(48 168)">
+        <rect x="-14" y="-9" width="28" height="18" rx="2"/>
+        <rect x="-14" y="-3" width="28" height="3" opacity=".35"/>
+        <rect x="-14" y="3" width="28" height="3" opacity=".35"/>
+      </g>
+    </svg>
+    <div class="imex-loader-brand">
+      <span class="imex-loader-letter imex-loader-letter-im">I</span>
+      <span class="imex-loader-letter imex-loader-letter-im">M</span>
+      <span class="imex-loader-letter imex-loader-letter-ex">E</span>
+      <span class="imex-loader-letter imex-loader-letter-ex">X</span>
+    </div>
+    <p class="imex-loader-tag">Clearing the route</p>
+    <div class="imex-loader-meter" aria-hidden="true">
+      <span class="imex-loader-bar"><i></i></span>
+      <b class="imex-loader-pct">0</b>
+    </div>
+  </div>
+</div>
+<div class="vt-overlay" aria-hidden="true">
+  <div class="vt-wipe"></div><div class="vt-route"></div><div class="vt-zoom"></div>
+  <div class="vt-frag"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+</div>
+<header class="site-nav" id="siteNav">
+  <a class="logo" href="index.html" data-vt="route"><img src="assets/logo/logo-black.png" alt="IMEX Clearing & Logistics Pvt. Ltd." width="150" height="50"></a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="is-active" data-vt="route">Home</a></li>
+    <li><a href="about.html" class="" data-vt="frag">About Us</a></li>
+    <li class="drop">
+      <button type="button" aria-expanded="false" aria-haspopup="true">Services</button>
+      <ul class="drop-menu" role="menu"><li><a href="services.html" class="" data-vt="wipe">All services</a></li><li><a href="sea-freight.html" class="" data-vt="zoom">Sea Freight</a></li><li><a href="lcl-consolidation.html" class="" data-vt="zoom">Inbound/Outbound LCL Consolidation</a></li><li><a href="buyer-consolidation.html" class="" data-vt="zoom">Buyer Consolidation</a></li><li><a href="global-fcl-forwarding.html" class="" data-vt="zoom">Global FCL Forwarding</a></li><li><a href="air-freight.html" class="" data-vt="zoom">Air Freight</a></li><li><a href="customs-clearance.html" class="" data-vt="zoom">Customs Clearance</a></li><li><a href="dgft-licensing.html" class="" data-vt="zoom">DGFT / Licensing Works</a></li></ul>
+    </li>
+    <li><a href="value-added-services.html" class="" data-vt="frag">Value Added Services</a></li>
+    <li><a href="tracking.html" class="" data-vt="route">Track & Trace</a></li>
+    <li><a href="quote.html" class="" data-vt="zoom">Get a Quote</a></li>
+    <li><a href="contact.html" class="" data-vt="wipe">Contact</a></li>
+  </ul>
+  <a class="nav-cta magnetic btn btn-cyan" href="quote.html" data-vt="zoom">Get a Quote</a>
+  <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</header>
+<nav class="mobile-panel" aria-label="Mobile">
+  <a href="index.html">Home</a>
+  <a href="about.html">About Us</a>
+  <p style="margin:18px 0 6px;color:#00ADEF;letter-spacing:.2em;font-size:12px">SERVICES</p>
+  <div class="sub"><a href="sea-freight.html">Sea Freight</a><a href="lcl-consolidation.html">Inbound/Outbound LCL Consolidation</a><a href="buyer-consolidation.html">Buyer Consolidation</a><a href="global-fcl-forwarding.html">Global FCL Forwarding</a><a href="air-freight.html">Air Freight</a><a href="customs-clearance.html">Customs Clearance</a><a href="dgft-licensing.html">DGFT / Licensing Works</a></div>
+  <a href="value-added-services.html">Value Added Services</a>
+  <a href="tracking.html">Track & Trace</a>
+  <a href="quote.html">Get a Quote</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<main id="main">
+<div class="hero-stack">
+<section class="hero hero-film">
+  <canvas id="heroFrames" class="hero-film-canvas" data-frames="192" data-src="assets/images/hero-frames/frame-" width="1280" height="720" aria-hidden="true"></canvas>
+  <div class="hero-film-scrim"></div>
+  <div class="hero-film-progress" aria-hidden="true"></div>
+  <div class="intro-line"></div>
+  <div class="hero-copy">
+    <div class="hero-title-block">
+      <p class="hero-lead">IMEX Clearing & Logistics</p>
+      <h1 class="display">
+        <span class="hero-line"><span>Your one stop</span></span>
+        <span class="hero-line"><span>solution</span></span>
+      </h1>
+      <p class="hero-sub">for all your import export needs</p>
+      <div class="hero-actions">
+        <a class="btn btn-cyan magnetic" href="quote.html" data-vt="zoom">Request a Quote <span class="arr">→</span></a>
+        <a class="btn btn-ghost magnetic" href="services.html" data-vt="wipe">Explore services</a>
+      </div>
+    </div>
+    <aside class="hero-aside">
+      <p class="lede">Kanpur’s international freight forwarder and consolidator — sea, air, customs and licensing, from a single coordinated desk.</p>
+    </aside>
+  </div>
+</section>
+<div class="hero-film-track" aria-hidden="true"></div>
+<section class="story-band" data-story-band>
+  <div class="story-copy">
+    <p class="story-year">1994</p>
+    <h2 class="display story-title"><i class="story-mark" aria-hidden="true"></i>The story behind<br><span>every shipment</span></h2>
+    <i class="story-rule" aria-hidden="true"></i>
+    <p class="lede">Imex Clearing & Logistics Private Limited is one of Kanpur’s leading International freight forwarder and consolidator, specializing in multi-modal shipments from/to India. We provide the complete ambit of logistic services. The CONTAINER CORPORATION OF INDIA LIMITED for our outstanding performance in this field has awarded us for third time in a row.</p>
+    <p class="lede">Being established in 1994, Foundation of “Imex Clearing” was the ultimate realization of the dream of Mr. Suresh Kumar Mishra. Who initially started air freights and custom clearance business to many challenging destinations all over the world. He made this challenge his specialty and later diversified and created a distinct brand image.</p>
+    <div class="story-actions">
+      <a class="btn btn-cyan magnetic" href="about.html" data-vt="frag">Explore Our Company <span class="arr">→</span></a>
+      <a class="story-play" href="about.html" data-vt="frag"><i aria-hidden="true"><svg viewBox="0 0 12 12" fill="#00ADEF"><path d="M2 1.2v9.6L11 6z"/></svg></i> Our Journey</a>
+    </div>
+  </div>
+  <div class="story-visual">
+    <img class="story-yard" src="assets/images/hero-frames/frame-012.jpg" alt="" width="1280" height="720">
+    <svg class="story-slash" viewBox="0 0 280 800" preserveAspectRatio="none" aria-hidden="true"><path fill="#f4f8fd" d="M280 0C150 240 130 520 0 800H0V0Z"/></svg>
+    <img class="story-truck" src="assets/images/block/about-img.png" alt="IMEX logistics vehicle" width="580" height="404">
+    <div class="story-pills">
+      <div class="story-pill">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2" stroke="#00ADEF" stroke-width="1.7"/><path d="M3.5 10h17M8 3.5v3M16 3.5v3" stroke="#00ADEF" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <span><b>Established in</b><strong>1994</strong></span>
+      </div>
+      <div class="story-pill">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.5 9.5 12 4l5.5 5.5v2.2c0 3.6-2.3 6.3-5.5 8.3-3.2-2-5.5-4.7-5.5-8.3V9.5Z" stroke="#00ADEF" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12.2 2 2 4-4" stroke="#00ADEF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span><b>Awarded by</b><strong>CONTAINER CORPORATION OF INDIA LIMITED</strong></span>
+      </div>
+    </div>
+    <div class="story-corner" aria-hidden="true">
+      <svg viewBox="0 0 160 160"><ellipse cx="110" cy="110" rx="70" ry="70" fill="none" stroke="#fff" stroke-width="1.2"/><ellipse cx="110" cy="110" rx="42" ry="70" fill="none" stroke="#fff" stroke-width="1"/><ellipse cx="110" cy="110" rx="70" ry="22" fill="none" stroke="#fff" stroke-width="1"/></svg>
+    </div>
+  </div>
+</section>
+</div>
+
+<section class="section globe-band" data-globe-band>
+  <div class="globe-band-grid">
+    <div class="globe-copy">
+      <p class="kicker">Partners across oceans</p>
+      <h2 class="display">A global network of partners</h2>
+      <p class="lede">With a global network of partners, Imex Clearing provides seamless shipping world over. Imex Clearing offers centralized customer services for international transport, logistics and supply chain management to enhance the productivity of your enterprise.</p>
+    </div>
+    <div class="scene-frame globe-frame">
+      <canvas data-scene="globe" data-globe-scroll="1"></canvas>
+    </div>
+  </div>
+</section>
+
+<section class="rail-pin">
+  <div class="rail">
+
+    <article class="rail-panel">
+      <div class="rail-copy">
+        <p class="kicker">01 / 07</p>
+        <h3 class="display">Sea Freight</h3>
+        <p class="lede" style="margin:16px 0 24px">Complete sea freight for import and export, including inbound and outbound ocean solutions, FCL/LCL cross trade and door-to-door delivery.</p>
+        <a class="btn btn-cyan" href="sea-freight.html" data-vt="zoom">Explore Service <span class="arr">→</span></a>
+      </div>
+      <div class="rail-visual">
+        <img src="assets/images/background/banner_s.jpg" alt="Sea Freight">
+      </div>
+    </article>
+
+    <article class="rail-panel">
+      <div class="rail-copy">
+        <p class="kicker">02 / 07</p>
+        <h3 class="display">Inbound/Outbound LCL Consolidation</h3>
+        <p class="lede" style="margin:16px 0 24px">LCL consolidation from Indian ports and hinterland ICDs, with import consolidation from worldwide origins.</p>
+        <a class="btn btn-cyan" href="lcl-consolidation.html" data-vt="zoom">Explore Service <span class="arr">→</span></a>
+      </div>
+      <div class="rail-visual">
+        <img src="assets/images/background/banner_olc.jpg" alt="Inbound/Outbound LCL Consolidation">
+      </div>
+    </article>
+
+    <article class="rail-panel">
+      <div class="rail-copy">
+        <p class="kicker">03 / 07</p>
+        <h3 class="display">Buyer Consolidation</h3>
+        <p class="lede" style="margin:16px 0 24px">Cost-effective consolidation for customers with multiple vendors who regularly order from a specific region or country.</p>
+        <a class="btn btn-cyan" href="buyer-consolidation.html" data-vt="zoom">Explore Service <span class="arr">→</span></a>
+      </div>
+      <div class="rail-visual">
+        <img src="assets/images/background/banner-1.jpg" alt="Buyer Consolidation">
+      </div>
+    </article>
+
+    <article class="rail-panel">
+      <div class="rail-copy">
+        <p class="kicker">04 / 07</p>
+        <h3 class="display">Global FCL Forwarding</h3>
+        <p class="lede" style="margin:16px 0 24px">Inbound and outbound full container load services, tailor-made to volume or a single route.</p>
+        <a class="btn btn-cyan" href="global-fcl-forwarding.html" data-vt="zoom">Explore Service <span class="arr">→</span></a>
+      </div>
+      <div class="rail-visual">
+        <img src="assets/images/links/stock-containers.jpg" alt="Global FCL Forwarding">
+      </div>
+    </article>
+
+    <article class="rail-panel">
+      <div class="rail-copy">
+        <p class="kicker">05 / 07</p>
+        <h3 class="display">Air Freight</h3>
+        <p class="lede" style="margin:16px 0 24px">Expert international air freight forwarding for a single shipment or a complex freight management programme.</p>
+        <a class="btn btn-cyan" href="air-freight.html" data-vt="zoom">Explore Service <span class="arr">→</span></a>
+      </div>
+      <div class="rail-visual">
+        <img src="assets/images/background/banner_a.jpg" alt="Air Freight">
+      </div>
+    </article>
+
+    <article class="rail-panel">
+      <div class="rail-copy">
+        <p class="kicker">06 / 07</p>
+        <h3 class="display">Customs Clearance</h3>
+        <p class="lede" style="margin:16px 0 24px">In-house customs clearance at major Indian ports, including export clearance and project logistics.</p>
+        <a class="btn btn-cyan" href="customs-clearance.html" data-vt="zoom">Explore Service <span class="arr">→</span></a>
+      </div>
+      <div class="rail-visual">
+        <img src="assets/images/background/banner_cc.jpg" alt="Customs Clearance">
+      </div>
+    </article>
+
+    <article class="rail-panel">
+      <div class="rail-copy">
+        <p class="kicker">07 / 07</p>
+        <h3 class="display">DGFT / Licensing Works</h3>
+        <p class="lede" style="margin:16px 0 24px">DGFT and related authority work, including licences and registrations connected to import-export needs.</p>
+        <a class="btn btn-cyan" href="dgft-licensing.html" data-vt="zoom">Explore Service <span class="arr">→</span></a>
+      </div>
+      <div class="rail-visual">
+        <img src="assets/images/background/banner_lic.jpg" alt="DGFT / Licensing Works">
+      </div>
+    </article>
+
+    <article class="rail-panel rail-end">
+      <div class="rail-copy">
+        <p class="kicker">The full list</p>
+        <h3 class="display">Seven ways to move cargo</h3>
+        <a class="btn btn-ghost" href="services.html" data-vt="wipe" style="margin-top:24px">Explore All Services <span class="arr">→</span></a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="how-band" data-how-band>
+  <div class="how-grid">
+    <div class="how-copy">
+      <p class="how-kicker"><i aria-hidden="true"></i> How it works</p>
+      <h2 class="display how-title">
+        <span data-step="0">Order.</span>
+        <span data-step="1">Wait.</span>
+        <span data-step="2">Deliver.</span>
+      </h2>
+      <ol class="how-log">
+        <li data-step="0">
+          <b>01</b>
+          <h3>Order</h3>
+          <p>Fill the form and submit your details</p>
+        </li>
+        <li data-step="1">
+          <b>02</b>
+          <h3>Wait</h3>
+          <p>Wait while we process your details and contact you</p>
+        </li>
+        <li data-step="2">
+          <b>03</b>
+          <h3>Deliver</h3>
+          <p>You confirm and we deliver your order</p>
+        </li>
+      </ol>
+      <a class="btn btn-navy magnetic" href="quote.html" data-vt="zoom">Request a Quote <span class="arr">→</span></a>
+    </div>
+    <div class="how-dock" aria-hidden="true">
+      <div class="how-slab">
+        <div class="how-post"><b>01</b></div>
+        <div class="how-post"><b>02</b></div>
+        <div class="how-post"><b>03</b></div>
+        <div class="how-asphalt">
+          <i class="how-dash"></i>
+          <i class="how-fill"></i>
+        </div>
+        <div class="how-van-wrap">
+          <img src="assets/images/block/how-van.png" alt="IMEX delivery van" width="991" height="486" loading="lazy">
+        </div>
+        <span class="how-flag"><i></i> Destination</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="vas-band" data-vas-band>
+  <div class="vas-shell">
+    <div class="vas-copy">
+      <p class="vas-kicker"><i aria-hidden="true"></i> Beyond transportation</p>
+      <h2 class="display vas-title">Value added services</h2>
+      <p class="vas-lede">Trade tools, container references, terms and useful government links published on IMEX.</p>
+      <a class="btn btn-navy magnetic" href="value-added-services.html" data-vt="frag">Discover More <span class="arr">→</span></a>
+    </div>
+    <aside class="vas-stage">
+      <div class="vas-media" aria-hidden="true">
+        <img class="is-on" src="assets/images/links/stock-containers-alt.jpg" alt="" width="1600" height="1067" data-vas-img="0">
+        <img src="assets/images/links/stock-incoterms.jpg" alt="" width="1600" height="1067" data-vas-img="1" loading="lazy">
+        <img src="assets/images/links/stock-cargo.jpg" alt="" width="1200" height="1800" data-vas-img="2" loading="lazy">
+      </div>
+      <nav class="vas-index" aria-label="Value added services">
+        <a href="value-added-services.html" data-vt="frag" data-vas-i="0" class="is-on"><i aria-hidden="true"></i><strong>Containers &amp; ULDs</strong><em>Reference</em></a>
+        <a href="value-added-services.html" data-vt="frag" data-vas-i="1"><i aria-hidden="true"></i><strong>INCO Terms</strong><em>Contracts</em></a>
+        <a href="value-added-services.html" data-vt="frag" data-vas-i="2"><i aria-hidden="true"></i><strong>Cargo Classifications</strong><em>Handling</em></a>
+        <div class="vas-more">
+          <a href="value-added-services.html" data-vt="frag">Charting Terms</a>
+          <a href="value-added-services.html" data-vt="frag">International Trade Terms</a>
+          <a href="https://www.xe.com/currencyconverter/" target="_blank" rel="noopener">Currency Converter</a>
+        </div>
+      </nav>
+    </aside>
+  </div>
+</section>
+
+<section class="quote-band" data-quote-band>
+  <svg class="qb-light" viewBox="0 0 1440 760" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="qbLg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#e7f6ff"/>
+        <stop offset=".42" stop-color="#c8ebff"/>
+        <stop offset="1" stop-color="#dff4ff"/>
+      </linearGradient>
+    </defs>
+    <path fill="url(#qbLg)" d="M760,-40 C640,160 860,340 560,780 L1520,780 L1520,-40 Z"/>
+    <path fill="rgba(255,255,255,.22)" d="M1020,20 C1180,120 1320,50 1440,190 C1520,300 1440,470 1260,560 C1100,640 980,620 780,780 L1520,780 L1520,0 Z"/>
+    <path fill="none" stroke="rgba(255,255,255,.5)" stroke-width="28" d="M1080,70 C1220,200 1380,150 1460,330"/>
+  </svg>
+  <div class="qb-blobs" aria-hidden="true">
+    <span class="qb-blob qb-blob-a"></span>
+    <span class="qb-blob qb-blob-b"></span>
+    <span class="qb-blob qb-blob-c"></span>
+  </div>
+  <svg class="qb-globe" viewBox="0 0 520 360" aria-hidden="true">
+    <defs>
+      <radialGradient id="qbGlow" cx="50%" cy="70%" r="70%">
+        <stop offset="0" stop-color="rgba(0,173,239,.32)"/>
+        <stop offset="1" stop-color="rgba(0,173,239,0)"/>
+      </radialGradient>
+    </defs>
+    <g class="qb-globe-spin">
+      <circle cx="260" cy="300" r="250" fill="url(#qbGlow)"/>
+      <ellipse cx="260" cy="300" rx="250" ry="250" fill="none" stroke="rgba(120,214,255,.78)" stroke-width="1.8"/>
+      <ellipse cx="260" cy="300" rx="170" ry="250" fill="none" stroke="rgba(120,214,255,.48)" stroke-width="1.3"/>
+      <ellipse cx="260" cy="300" rx="82" ry="250" fill="none" stroke="rgba(120,214,255,.48)" stroke-width="1.3"/>
+      <line x1="10" y1="300" x2="510" y2="300" stroke="rgba(120,214,255,.42)" stroke-width="1.3"/>
+      <ellipse cx="260" cy="228" rx="232" ry="56" fill="none" stroke="rgba(120,214,255,.5)" stroke-width="1.3"/>
+      <ellipse cx="260" cy="164" rx="196" ry="40" fill="none" stroke="rgba(120,214,255,.42)" stroke-width="1.2"/>
+      <ellipse cx="260" cy="108" rx="140" ry="24" fill="none" stroke="rgba(120,214,255,.38)" stroke-width="1.2"/>
+    </g>
+  </svg>
+  <div class="qb-layout">
+    <div class="qb-copy">
+      <p class="qb-kicker"><i aria-hidden="true"></i> Enquiry</p>
+      <h2 class="display qb-title"><span class="qb-line">Send us your</span><br>query</h2>
+      <p class="lede qb-lede">Please fill in your details so that we can contact and update you about your query.</p>
+      <a class="btn btn-cyan magnetic qb-cta" href="quote.html" data-vt="zoom">Request a Quote <span class="arr">→</span></a>
+    </div>
+    <svg class="qb-flight" viewBox="0 0 420 160" aria-hidden="true">
+      <path class="qb-dash" d="M8,118 C70,108 110,42 188,38 C268,34 330,88 408,52"/>
+      <g class="qb-plane">
+        <path d="M0 7 L30 0 L13 11 L15 20 L20 11 Z" fill="#fff"/>
+        <path d="M13 11 L15 20" stroke="rgba(180,210,230,.9)" stroke-width="1"/>
+      </g>
+    </svg>
+    <div class="qb-visual">
+      <div class="qb-frame">
+        <img class="qb-yard" src="assets/images/hero-frames/frame-165.jpg" alt="" width="1280" height="720">
+      </div>
+      <svg class="qb-orbit" viewBox="0 0 500 500" aria-hidden="true">
+        <ellipse class="qb-ring" cx="250" cy="258" rx="214" ry="90" transform="rotate(-18 250 258)"/>
+        <ellipse class="qb-ring qb-ring-2" cx="250" cy="258" rx="188" ry="76" transform="rotate(14 250 258)"/>
+      </svg>
+      <i class="qb-ground" aria-hidden="true"></i>
+      <img class="qb-courier" src="assets/images/block/Courier-Man.png" alt="Courier delivery representative" width="520" height="720">
+      <span class="qb-chip qb-chip-box" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="12" rx="1.6" stroke="#00ADEF" stroke-width="1.8"/><path d="M4 10h16M12 7V5m-3 2 3-3 3 3" stroke="#00ADEF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="qb-chip qb-chip-pin" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.2 7-11.2A7 7 0 0 0 5 9.8C5 14.8 12 21 12 21Z" stroke="#00ADEF" stroke-width="1.8"/><circle cx="12" cy="9.8" r="2.2" stroke="#00ADEF" stroke-width="1.8"/></svg>
+      </span>
+    </div>
+  </div>
+</section>
+
+<section class="track-band" data-track-band>
+  <div class="track-grid">
+    <div class="track-copy">
+      <p class="track-kicker"><i aria-hidden="true"></i> Track &amp; Trace</p>
+      <h2 class="display track-title">Now you can track your product easily</h2>
+      <p class="track-lede">Use the original Track &amp; Trace destination used by IMEX. This page does not invent shipment status.</p>
+      <form id="trackForm" class="track-console">
+        <label for="awb">Tracking number</label>
+        <div class="track-row">
+          <input id="awb" name="awb" type="text" placeholder="Enter AWB / container / bill of lading" autocomplete="off">
+          <button class="btn btn-cyan magnetic" type="submit">Track Your Shipment <span class="arr">→</span></button>
+        </div>
+        <p id="trackNote" class="track-note" role="status"></p>
+        <a class="btn btn-ghost track-open" href="tracking.html" data-vt="route">Open tracking page <span class="arr">→</span></a>
+      </form>
+    </div>
+    <aside class="track-radar" aria-hidden="true">
+      <span class="track-radar-label"><b></b> Route board</span>
+      <svg class="track-radar-svg" viewBox="0 0 640 520" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <radialGradient id="trackGlow" cx="50%" cy="42%" r="55%">
+            <stop offset="0%" stop-color="rgba(0,173,239,.22)"/>
+            <stop offset="100%" stop-color="rgba(0,173,239,0)"/>
+          </radialGradient>
+        </defs>
+        <rect width="640" height="520" fill="url(#trackGlow)"/>
+        <ellipse class="track-pulse" cx="320" cy="210" rx="210" ry="210" fill="none" stroke="rgba(0,173,239,.18)" stroke-width="1.2"/>
+        <ellipse class="track-pulse" cx="320" cy="210" rx="150" ry="150" fill="none" stroke="rgba(0,173,239,.22)" stroke-width="1.2"/>
+        <ellipse class="track-pulse" cx="320" cy="210" rx="90" ry="90" fill="none" stroke="rgba(0,173,239,.3)" stroke-width="1.4"/>
+        <path class="track-route" d="M78 380 C160 300 210 250 280 220 C360 180 430 150 560 120"/>
+        <path class="track-route-live" d="M78 380 C160 300 210 250 280 220 C360 180 430 150 560 120"/>
+        <circle class="track-node" cx="78" cy="380" r="7"/>
+        <circle class="track-node" cx="280" cy="220" r="7"/>
+        <circle class="track-node" cx="560" cy="120" r="8"/>
+        <g class="track-plane" transform="translate(280 220)">
+          <path d="M0 0 L26 -6 L12 8 L14 16 L20 8 Z" fill="#fff"/>
+        </g>
+      </svg>
+      <div class="track-stops">
+        <span><strong>01</strong><em>Origin</em></span>
+        <span><strong>02</strong><em>Route</em></span>
+        <span><strong>03</strong><em>Portal</em></span>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="touch-band" data-touch-band>
+  <div class="touch-grid">
+    <div class="touch-copy">
+      <p class="touch-kicker"><i aria-hidden="true"></i> Kanpur</p>
+      <h2 class="display touch-title">Get in<br>touch</h2>
+      <p class="touch-addr">No. 16, 1st Floor, Harmony Arcade<br>17/1, Telegraph Road, The Mall<br>Kanpur - 208001</p>
+      <a class="btn btn-navy magnetic" href="contact.html" data-vt="wipe">Contact Us <span class="arr">→</span></a>
+    </div>
+    <aside class="touch-plate">
+      <img class="touch-map" src="assets/images/background/contact-map.png" alt="" width="1200" height="720">
+      <span class="touch-pin" aria-hidden="true"></span>
+      <div class="touch-lines">
+        <a href="tel:+915122391885"><span>Tel</span><b>+91 512-2391885</b></a>
+        <a href="tel:+919335347057"><span>Mobile</span><b>+91 933 534 7057</b></a>
+        <a href="mailto:sayyam7@imexclearing.com"><span>Email</span><b>sayyam7@imexclearing.com</b></a>
+      </div>
+      <div class="touch-desks">
+        <a href="mailto:imports@imexclearing.com">Imports desk</a>
+        <a href="mailto:exports@imexclearing.com">Exports desk</a>
+      </div>
+    </aside>
+  </div>
+</section>
+</main>
+
+<footer class="site-foot">
+  <div class="foot-horizon" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="foot-mast">
+      <a class="foot-logo" href="index.html" data-vt="wipe">
+        <img src="assets/logo/logo-white.png" alt="IMEX Clearing &amp; Logistics" width="150" height="50">
+      </a>
+      <a class="btn btn-cyan magnetic" href="quote.html" data-vt="zoom">Request a Quote <span class="arr">→</span></a>
+      <div class="foot-ident">
+        <p class="display foot-title">Imex International</p>
+        <p class="foot-legalname">Clearing &amp; Logistics Private Limited</p>
+      </div>
+    </div>
+    <div class="foot-rule" aria-hidden="true"></div>
+    <div class="foot-body">
+      <address class="foot-desk">
+        <h3>Kanpur desk</h3>
+        <p>No. 16, 1st Floor, Harmony Arcade,<br>17/1, Telegraph Road, The Mall,<br>Kanpur - 208001</p>
+        <a href="tel:+915122391885"><span>Tel</span>+91 512-2391885</a>
+        <a href="tel:+919335347057"><span>Mobile</span>+91 933 534 7057</a>
+        <a href="mailto:sayyam7@imexclearing.com"><span>Email</span>sayyam7@imexclearing.com</a>
+        <div class="foot-social">
+          <a href="https://www.facebook.com/Imex-Clearing-Logistics-pvt-ltd-112181573833973/" target="_blank" rel="noopener noreferrer" aria-label="IMEX on Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14.2 8H16V5.6h-1.8c-2.2 0-3.6 1.4-3.6 3.7v1.4H9v2.7h1.6V19h2.8v-5.6h2.2l.5-2.7h-2.7V9.4c0-.7.3-1.4 1.2-1.4h.6z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/imexclearing/" target="_blank" rel="noopener noreferrer" aria-label="IMEX on Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.6" y="3.6" width="16.8" height="16.8" rx="5" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="17.1" cy="6.9" r="1.05" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </address>
+      <nav class="foot-col" aria-label="Footer navigation">
+        <h3>Navigate</h3>
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="services.html">Services</a>
+        <a href="value-added-services.html">Value Added Services</a>
+        <a href="tracking.html">Track &amp; Trace</a>
+        <a href="quote.html">Get a Quote</a>
+        <a href="contact.html">Contact</a>
+        <div class="foot-tools">
+          <a href="value-added-services.html">Trade tools</a>
+          <a href="https://www.xe.com/currencyconverter/" target="_blank" rel="noopener">Currency converter</a>
+        </div>
+      </nav>
+      <nav class="foot-col" aria-label="Footer services">
+        <h3>Services</h3>
+        <a href="sea-freight.html" data-vt="zoom">Sea Freight</a><a href="lcl-consolidation.html" data-vt="zoom">Inbound/Outbound LCL Consolidation</a><a href="buyer-consolidation.html" data-vt="zoom">Buyer Consolidation</a><a href="global-fcl-forwarding.html" data-vt="zoom">Global FCL Forwarding</a><a href="air-freight.html" data-vt="zoom">Air Freight</a><a href="customs-clearance.html" data-vt="zoom">Customs Clearance</a><a href="dgft-licensing.html" data-vt="zoom">DGFT / Licensing Works</a>
+      </nav>
+    </div>
+    <div class="foot-bottom">
+      <p>Imex International © Copyright 2020, All rights reserved</p>
+      <p>Powered and by <a href="http://rootkittechnologies.com/" target="_blank" rel="noopener">RootKit Technologies</a></p>
+    </div>
+  </div>
+</footer>
+<button class="to-top" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isTouch = window.matchMedia("(pointer:coarse)").matches;
+  const page = document.body.dataset.page || "home";
+  const plugins = [ScrollTrigger];
+  if (typeof SplitText !== "undefined") plugins.push(SplitText);
+  gsap.registerPlugin.apply(gsap, plugins);
+  let bootReady = () => {};
+  const whenBooted = new Promise((resolve) => { bootReady = resolve; });
+
+  /* Route-clearance boot loader — keep GSAP off SVG transforms */
+  (function bootLoader(){
+    const loader = document.getElementById("imexLoader");
+    if (!loader) {
+      document.body.classList.remove("is-loading");
+      bootReady();
+      return;
+    }
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      document.body.classList.remove("is-loading");
+      loader.setAttribute("aria-busy", "false");
+      loader.classList.add("is-done");
+      const reveal = [".site-nav", "#main", ".site-foot"].map((s) => document.querySelector(s)).filter(Boolean);
+      if (reveal.length) {
+        gsap.fromTo(reveal, { opacity: 0 }, {
+          opacity: 1, duration: 0.5, stagger: 0.04, ease: "power2.out", clearProps: "opacity"
+        });
+      }
+      bootReady();
+      setTimeout(() => { try { loader.remove(); } catch (_) {} }, 650);
+    };
+    const failSafe = setTimeout(() => {
+      try { loader.style.transform = "translateY(-110%)"; } catch (_) {}
+      finish();
+    }, 6000);
+
+    if (reduce) {
+      clearTimeout(failSafe);
+      loader.style.display = "none";
+      finish();
+      return;
+    }
+
+    const path = loader.querySelector(".imex-loader-lane-draw");
+    const box = loader.querySelector(".imex-loader-box");
+    const pct = loader.querySelector(".imex-loader-pct");
+    const bar = loader.querySelector(".imex-loader-bar i");
+    const tag = loader.querySelector(".imex-loader-tag");
+    const nodes = Array.prototype.slice.call(loader.querySelectorAll(".imex-loader-node"));
+    const letters = Array.prototype.slice.call(loader.querySelectorAll(".imex-loader-letter"));
+    const tags = ["Clearing the route", "Sea · Air · Customs", "Kanpur to the world"];
+    const duration = 1.9;
+
+    const placeBox = (dist, len, alpha) => {
+      if (!path || !box || !len) return;
+      const d = Math.max(0, Math.min(len, dist));
+      const pt = path.getPointAtLength(d);
+      const pt2 = path.getPointAtLength(Math.min(len, d + 2));
+      const ang = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * 180 / Math.PI;
+      /* SVG transform attr for position; style.opacity only (never style.transform) */
+      box.setAttribute("transform", "translate(" + pt.x + " " + pt.y + ") rotate(" + ang + ")");
+      box.style.opacity = String(alpha);
+    };
+
+    const setProgress = (t, len) => {
+      const p = Math.max(0, Math.min(1, t));
+      const v = Math.round(p * 100);
+      if (pct) pct.textContent = String(v);
+      if (bar) bar.style.width = v + "%";
+      if (path && len) {
+        path.style.strokeDasharray = String(len);
+        path.style.strokeDashoffset = String(len * (1 - p));
+      }
+      const boxAlpha = p < 0.04 ? p / 0.04 : 1;
+      placeBox(p * len, len, boxAlpha);
+      nodes.forEach((n, i) => {
+        const gate = (i + 0.35) / nodes.length;
+        n.style.opacity = p >= gate ? "1" : "0";
+      });
+      if (tag) {
+        if (p < 0.32) tag.textContent = tags[0];
+        else if (p < 0.62) tag.textContent = tags[1];
+        else tag.textContent = tags[2];
+        tag.style.color = p > 0.7 ? "rgba(255,255,255,.88)" : "rgba(255,255,255,.55)";
+      }
+    };
+
+    const exitLoader = () => {
+      sessionStorage.setItem("imexBooted", "1");
+      gsap.to(loader, {
+        yPercent: -110,
+        duration: 0.75,
+        ease: "power4.inOut",
+        onComplete: () => {
+          clearTimeout(failSafe);
+          finish();
+        }
+      });
+    };
+
+    const run = () => {
+      const len = (path && path.getTotalLength && path.getTotalLength()) || 0;
+      if (path && len) {
+        path.style.strokeDasharray = String(len);
+        path.style.strokeDashoffset = String(len);
+      }
+      if (box) box.style.transform = "";
+      placeBox(0, len, 0);
+      setProgress(0, len);
+
+      const state = { p: 0 };
+      const tl = gsap.timeline({ onComplete: exitLoader });
+
+      if (letters.length) {
+        tl.fromTo(letters, {
+          yPercent: 110,
+          opacity: 0
+        }, {
+          yPercent: 0,
+          opacity: 1,
+          duration: 0.55,
+          stagger: 0.075,
+          ease: "power3.out"
+        }, 0);
+      }
+
+      tl.to(state, {
+        p: 1,
+        duration: duration,
+        ease: "power2.inOut",
+        onUpdate: () => setProgress(state.p, len)
+      }, 0.12);
+    };
+    requestAnimationFrame(() => requestAnimationFrame(run));
+  })();
+
+  /* Lenis */
+  let lenis;
+  if (!reduce) {
+    lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add((t) => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+    ScrollTrigger.scrollerProxy(document.body, {
+      scrollTop(v){ if (arguments.length) lenis.scrollTo(v, { immediate: true }); return lenis.scroll; },
+      getBoundingClientRect(){ return { top:0, left:0, width: innerWidth, height: innerHeight }; }
+    });
+  }
+
+  /* Cursor */
+  const cur = document.querySelector(".cursor");
+  const dot = document.querySelector(".cursor-dot");
+  if (cur && dot && !isTouch && !reduce) {
+    const xC = gsap.quickTo(cur, "left", { duration: 0.45, ease: "power3" });
+    const yC = gsap.quickTo(cur, "top", { duration: 0.45, ease: "power3" });
+    const xD = gsap.quickTo(dot, "left", { duration: 0.18, ease: "power3" });
+    const yD = gsap.quickTo(dot, "top", { duration: 0.18, ease: "power3" });
+    window.addEventListener("pointermove", (e) => { xC(e.clientX); yC(e.clientY); xD(e.clientX); yD(e.clientY); });
+    document.querySelectorAll("a,button,.magnetic").forEach((el) => {
+      el.addEventListener("pointerenter", () => cur.classList.add("is-hover"));
+      el.addEventListener("pointerleave", () => cur.classList.remove("is-hover"));
+    });
+  }
+
+  /* Magnetic */
+  if (!isTouch && !reduce) {
+    document.querySelectorAll(".magnetic").forEach((btn) => {
+      btn.addEventListener("pointermove", (e) => {
+        const r = btn.getBoundingClientRect();
+        gsap.to(btn, { x: (e.clientX - r.left - r.width/2) * 0.28, y: (e.clientY - r.top - r.height/2) * 0.28, duration: 0.35 });
+      });
+      btn.addEventListener("pointerleave", () => gsap.to(btn, { x:0, y:0, duration: 0.5, ease: "elastic.out(1,0.4)" }));
+    });
+  }
+
+  /* Nav */
+  const nav = document.getElementById("siteNav");
+  const toggle = document.querySelector(".nav-toggle");
+  const drops = document.querySelectorAll(".drop");
+  window.addEventListener("scroll", () => {
+    if (!nav) return;
+    nav.classList.toggle("scrolled", window.scrollY > 40);
+  }, { passive: true });
+  if (toggle) toggle.addEventListener("click", () => {
+    const open = document.body.classList.toggle("nav-open");
+    toggle.setAttribute("aria-expanded", open);
+  });
+  drops.forEach((d) => {
+    const btn = d.querySelector("button");
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      drops.forEach((x) => { if (x !== d) x.classList.remove("open"); });
+      d.classList.toggle("open");
+      btn.setAttribute("aria-expanded", d.classList.contains("open"));
+    });
+    btn.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") { d.classList.remove("open"); btn.focus(); }
+    });
+  });
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".drop")) drops.forEach((d) => {
+      d.classList.remove("open");
+      d.querySelector("button")?.setAttribute("aria-expanded", "false");
+    });
+  });
+  document.querySelector(".to-top")?.addEventListener("click", () => {
+    if (lenis) lenis.scrollTo(0); else window.scrollTo({ top:0, behavior:"smooth" });
+  });
+  window.addEventListener("scroll", () => {
+    document.querySelector(".to-top")?.classList.toggle("show", window.scrollY > 600);
+  }, { passive: true });
+
+  /* Page transitions */
+  const overlay = document.querySelector(".vt-overlay");
+  function playExit(type){
+    return new Promise((resolve) => {
+      if (overlay) {
+        overlay.classList.remove("is-idle");
+        overlay.style.opacity = "1";
+        overlay.style.visibility = "visible";
+        overlay.dataset.type = type || "wipe";
+      }
+      const tl = gsap.timeline({ onComplete: resolve, defaults:{ duration: reduce ? 0 : 0.55, ease:"power3.inOut" }});
+      if (type === "route") tl.fromTo(".vt-route", { scaleX:0 }, { scaleX:1 });
+      else if (type === "zoom") tl.fromTo(".vt-zoom", { scale:0.2, opacity:0 }, { scale:8, opacity:1 });
+      else if (type === "frag") tl.to(".vt-frag span", { y:0, stagger:0.04 });
+      else tl.fromTo(".vt-wipe", { clipPath:"inset(0 100% 0 0)" }, { clipPath:"inset(0 0 0 0)" });
+      setTimeout(resolve, reduce ? 0 : 900);
+    });
+  }
+  if (overlay) {
+    overlay.classList.add("is-idle");
+    overlay.style.opacity = "0";
+    overlay.style.visibility = "hidden";
+  }
+  document.querySelectorAll('a[href$=".html"]').forEach((a) => {
+    if (a.target === "_blank") return;
+    a.addEventListener("click", (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if (!document.startViewTransition) {
+        playExit(a.dataset.vt || "wipe");
+      }
+    });
+  });
+
+  /* Split / reveal */
+  const mm = gsap.matchMedia();
+  mm.add("(prefers-reduced-motion: no-preference)", () => {
+    document.querySelectorAll("[data-split]").forEach((el) => {
+      try {
+        if (typeof SplitText === "undefined") return;
+        const split = SplitText.create(el, { type:"chars,words", aria:"auto" });
+        gsap.from(split.chars, { yPercent:120, opacity:0, stagger:0.018, duration:1, ease:"power4.out", delay: el.dataset.delay || 0 });
+      } catch (err) {
+        gsap.from(el, { y: 24, opacity: 0, duration: 0.8 });
+      }
+    });
+    gsap.utils.toArray("[data-reveal]").forEach((el) => {
+      gsap.from(el, {
+        y: 48, opacity: 0, duration: 1, ease: "power3.out",
+        scrollTrigger: { trigger: el, start: "top 84%" }
+      });
+    });
+    gsap.utils.toArray("[data-parallax]").forEach((el) => {
+      gsap.to(el, {
+        yPercent: Number(el.dataset.parallax) || -12, ease:"none",
+        scrollTrigger: { trigger: el.parentElement || el, scrub: true }
+      });
+    });
+  });
+
+  /* Homepage frame-by-frame hero — register before later pins */
+  (function heroFilm(){
+    const film = document.getElementById("heroFrames");
+    if (!film || page !== "home") return;
+    const ctx = film.getContext("2d", { alpha: false });
+    const count = Number(film.dataset.frames) || 192;
+    const prefix = film.dataset.src || "assets/images/hero-frames/frame-";
+    const frames = new Array(count);
+    let progress = 0;
+    let drawn = -1;
+
+    function coverDraw(img){
+      const cw = film.width, ch = film.height;
+      const ir = img.width / img.height, cr = cw / ch;
+      let dw, dh, dx, dy;
+      if (ir > cr) { dh = ch; dw = ch * ir; dx = (cw - dw) / 2; dy = 0; }
+      else { dw = cw; dh = cw / ir; dx = 0; dy = (ch - dh) / 2; }
+      ctx.drawImage(img, dx, dy, dw, dh);
+    }
+
+    function render(p){
+      progress = p;
+      const i = Math.min(count - 1, Math.max(0, Math.round(p * (count - 1))));
+      if (i === drawn && frames[i]) return;
+      const img = frames[i] || frames.find(Boolean);
+      if (!img) return;
+      coverDraw(img);
+      drawn = frames[i] ? i : drawn;
+      const bar = document.querySelector(".hero-film-progress");
+      if (bar) bar.style.width = (p * 100) + "%";
+    }
+
+    function size(){
+      const r = film.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      film.width = Math.max(2, Math.round(r.width * dpr));
+      film.height = Math.max(2, Math.round(r.height * dpr));
+      drawn = -1;
+      render(progress);
+    }
+
+    function loadFrame(i){
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.decoding = "async";
+        img.onload = () => { frames[i] = img; resolve(img); };
+        img.onerror = () => resolve(null);
+        img.src = prefix + String(i + 1).padStart(3, "0") + ".jpg";
+      });
+    }
+
+    loadFrame(0).then((first) => {
+      size();
+      if (first) render(0);
+      ScrollTrigger.refresh();
+    });
+
+    let next = 1;
+    let inflight = 0;
+    let loaded = 1;
+    const workers = 6;
+    function pump(){
+      while (inflight < workers && next < count) {
+        const i = next++;
+        inflight++;
+        loadFrame(i).then(() => {
+          inflight--;
+          loaded++;
+          if (Math.abs(Math.round(progress * (count - 1)) - i) <= 2) render(progress);
+          if (loaded === count) ScrollTrigger.refresh();
+          pump();
+        });
+      }
+    }
+    pump();
+
+    window.addEventListener("resize", size);
+
+    const copy = document.querySelector(".hero-film .hero-copy");
+    const canvas = document.getElementById("heroFrames");
+    const track = document.querySelector(".hero-film-track");
+    const mmFilm = gsap.matchMedia();
+    mmFilm.add("(prefers-reduced-motion: no-preference)", () => {
+      ScrollTrigger.create({
+        trigger: ".hero-film",
+        start: "top top",
+        endTrigger: track || ".hero-film-track",
+        end: "bottom top",
+        invalidateOnRefresh: true,
+        scrub: 0.35,
+        onUpdate: (self) => {
+          render(self.progress);
+          if (copy) {
+            const fade = Math.min(1, self.progress / 0.28);
+            copy.style.opacity = String(1 - fade);
+            copy.style.transform = "translateY(" + (-56 * fade) + "px)";
+            copy.style.pointerEvents = fade > 0.85 ? "none" : "auto";
+          }
+        }
+      });
+      if (canvas) {
+        gsap.fromTo(canvas, { scale: 1 }, {
+          scale: 1.08,
+          ease: "none",
+          transformOrigin: "center center",
+          scrollTrigger: {
+            trigger: "[data-story-band]",
+            start: "top bottom",
+            end: "top top",
+            scrub: 0.55
+          }
+        });
+      }
+      ScrollTrigger.sort();
+      ScrollTrigger.refresh();
+      return () => {
+        render(0);
+        if (copy) {
+          copy.style.opacity = "";
+          copy.style.transform = "";
+          copy.style.pointerEvents = "";
+        }
+      };
+    });
+    mmFilm.add("(prefers-reduced-motion: reduce)", () => { render(0); });
+  })();
+
+  /* Horizontal rail */
+  const rail = document.querySelector(".rail");
+  if (rail && !reduce) {
+    const panels = gsap.utils.toArray(".rail-panel");
+    const railTween = gsap.to(rail, {
+      x: () => -(rail.scrollWidth - innerWidth),
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".rail-pin",
+        pin: true,
+        scrub: 1,
+        invalidateOnRefresh: true,
+        anticipatePin: 1,
+        end: () => "+=" + Math.max(rail.scrollWidth - innerWidth, innerWidth)
+      }
+    });
+    panels.forEach((p) => {
+      const bits = p.querySelectorAll(".rail-copy > *");
+      if (!bits.length) return;
+      gsap.from(bits, {
+        y: 36, opacity: 0, stagger: 0.07, duration: 0.7, ease: "power3.out",
+        immediateRender: false,
+        scrollTrigger: {
+          trigger: p,
+          containerAnimation: railTween,
+          start: "left 78%",
+          toggleActions: "play none none reverse"
+        }
+      });
+      const photo = p.querySelector(".rail-visual img");
+      if (photo) {
+        gsap.fromTo(photo, { scale: 1.12 }, {
+          scale: 1.04, ease: "none",
+          scrollTrigger: {
+            trigger: p,
+            containerAnimation: railTween,
+            start: "left 100%",
+            end: "left -20%",
+            scrub: true
+          }
+        });
+      }
+    });
+  }
+
+  /* Process line */
+  if (document.querySelector(".process-line i") && !reduce) {
+    gsap.to(".process-line i", {
+      width: "100%", ease:"none",
+      scrollTrigger: { trigger: ".process", start:"top 70%", end:"bottom 50%", scrub:true }
+    });
+  }
+
+  /* How it works — dispatch lane */
+  (function howBand(){
+    const band = document.querySelector("[data-how-band]");
+    if (!band) return;
+    const words = band.querySelectorAll(".how-title span");
+    const logs = band.querySelectorAll(".how-log li");
+    const posts = band.querySelectorAll(".how-post");
+    const van = band.querySelector(".how-van-wrap");
+    const fill = band.querySelector(".how-fill");
+    const setStep = (i) => {
+      words.forEach((el, n) => el.classList.toggle("is-on", n <= i));
+      logs.forEach((el, n) => {
+        const on = n === i;
+        el.classList.toggle("is-on", on);
+        if (on) el.setAttribute("aria-current", "step");
+        else el.removeAttribute("aria-current");
+      });
+      posts.forEach((el, n) => el.classList.toggle("is-on", n <= i));
+    };
+    setStep(0);
+
+    const mmH = gsap.matchMedia();
+    mmH.add("(prefers-reduced-motion: no-preference)", () => {
+      const enter = gsap.timeline({
+        defaults: { ease: "power3.out" },
+        scrollTrigger: { trigger: band, start: "top 78%", once: true }
+      });
+      enter.from(band.querySelector(".how-kicker"), { y: 16, opacity: 0, duration: 0.45 })
+        .from(words, { y: 28, opacity: 0, stagger: 0.08, duration: 0.7 }, "-=0.22")
+        .from(logs, { y: 14, stagger: 0.07, duration: 0.45 }, "-=0.4")
+        .from(band.querySelector(".how-copy .btn"), { y: 12, opacity: 0, duration: 0.4 }, "-=0.28")
+        .from(band.querySelector(".how-slab"), { y: 36, opacity: 0, duration: 0.8 }, 0.08)
+        .from(van, { opacity: 0, duration: 0.7 }, 0.22)
+        .from(band.querySelector(".how-flag"), { y: 10, opacity: 0, duration: 0.4 }, 0.45);
+
+      const travel = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: {
+          trigger: band,
+          start: "top 68%",
+          end: "bottom 42%",
+          scrub: 1.15,
+          onUpdate: (self) => setStep(self.progress < 0.34 ? 0 : self.progress < 0.67 ? 1 : 2)
+        }
+      });
+      travel.fromTo(van, { x: 0 }, { x: () => Math.max(0, (band.querySelector(".how-slab")?.offsetWidth || 600) * 0.28) }, 0)
+        .fromTo(fill, { scaleX: 0 }, { scaleX: 1 }, 0);
+    });
+    mmH.add("(prefers-reduced-motion: reduce)", () => {
+      setStep(2);
+      gsap.set(fill, { scaleX: 1 });
+      gsap.set(van, { x: () => Math.max(0, (band.querySelector(".how-slab")?.offsetWidth || 600) * 0.28) });
+    });
+  })();
+
+  /* 3D */
+  const canvas = document.getElementById("scene");
+  const scenes = [];
+  function hex(n){ return new THREE.Color(n); }
+  function lights(scene){
+    scene.add(new THREE.AmbientLight(0x9bb7e8, 0.55));
+    const a = new THREE.DirectionalLight(0x00adef, 1.15); a.position.set(4,6,8); scene.add(a);
+    const b = new THREE.DirectionalLight(0x2e3192, 0.9); b.position.set(-6,2,-4); scene.add(b);
+    const p = new THREE.PointLight(0x00adef, 1.4, 18); p.position.set(0, 2.2, 3); scene.add(p);
+  }
+  function makeRenderer(el){
+    const renderer = new THREE.WebGLRenderer({ canvas: el, antialias: !isTouch, alpha: true, powerPreference:"high-performance" });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, isTouch ? 1.25 : 1.75));
+    renderer.setSize(el.clientWidth, el.clientHeight, false);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    return renderer;
+  }
+  function corrugate(w,h,d){
+    const g = new THREE.Group();
+    const body = new THREE.Mesh(
+      new THREE.BoxGeometry(w,h,d),
+      new THREE.MeshStandardMaterial({ color: 0x00adef, metalness: 0.72, roughness: 0.28 })
+    );
+    g.add(body);
+    const ribMat = new THREE.MeshStandardMaterial({ color: 0x0099cc, metalness: 0.8, roughness: 0.22 });
+    for (let i=0;i<10;i++){
+      const rib = new THREE.Mesh(new THREE.BoxGeometry(w*1.02, h*0.06, d*0.98), ribMat);
+      rib.position.y = -h/2 + (i+0.6)*(h/10);
+      g.add(rib);
+    }
+    const door = new THREE.Mesh(
+      new THREE.BoxGeometry(w*0.96, h*0.96, 0.04),
+      new THREE.MeshStandardMaterial({ color: 0x2e3192, metalness: 0.6, roughness: 0.35 })
+    );
+    door.position.z = d/2 + 0.02;
+    g.add(door);
+    const frame = new THREE.Mesh(
+      new THREE.BoxGeometry(0.08, h, d),
+      new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.4, roughness: 0.5 })
+    );
+    frame.position.x = w/2;
+    g.add(frame);
+    return g;
+  }
+  function crate(s, color){
+    return new THREE.Mesh(
+      new THREE.BoxGeometry(s, s*0.7, s*1.1),
+      new THREE.MeshStandardMaterial({ color: color || 0xc8a165, metalness: 0.1, roughness: 0.7 })
+    );
+  }
+  function disposeScene(obj){
+    obj.traverse((c) => {
+      if (c.geometry) c.geometry.dispose();
+      if (c.material) {
+        if (Array.isArray(c.material)) c.material.forEach((m)=>m.dispose());
+        else c.material.dispose();
+      }
+    });
+  }
+
+  function bootScene(el, kind){
+    if (!window.THREE || !el) return;
+    try {
+      const parent = el.parentElement;
+      if (parent && (el.clientWidth < 32 || el.clientHeight < 32)) {
+        el.style.width = parent.clientWidth + "px";
+        el.style.height = Math.max(parent.clientHeight, 320) + "px";
+      }
+      const renderer = makeRenderer(el);
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(38, el.clientWidth/Math.max(el.clientHeight,1), 0.1, 80);
+      camera.position.set(4.6, 2.4, 7.2);
+      camera.lookAt(0, 0, 0);
+      lights(scene);
+      const root = new THREE.Group();
+      scene.add(root);
+      const pointer = { x:0, y:0 };
+      const onMove = (e) => { pointer.x = (e.clientX / innerWidth) * 2 - 1; pointer.y = (e.clientY / innerHeight) * 2 - 1; };
+      window.addEventListener("pointermove", onMove);
+
+      if (kind === "container" || kind === "fcl") {
+        const c = corrugate(2.2, 2.2, 4.4);
+        c.rotation.y = 0.55;
+        root.add(c);
+        const floor = new THREE.Mesh(
+          new THREE.CircleGeometry(7, 48),
+          new THREE.MeshStandardMaterial({ color: 0x0a1024, metalness: 0.2, roughness: 0.9 })
+        );
+        floor.rotation.x = -Math.PI/2; floor.position.y = -1.25; root.add(floor);
+        for (let i=0;i<4;i++){
+          const p = crate(0.45, i%2?0x2e3192:0x00adef);
+          p.position.set((i-1.5)*1.1, -1.6, 2.2);
+          root.add(p);
+        }
+      }
+      if (kind === "globe") {
+        const R = 2.12;
+        const spin = new THREE.Group();
+        root.add(spin);
+        root.userData.globeSpin = spin;
+
+        const ocean = new THREE.Mesh(
+          new THREE.SphereGeometry(R, isTouch ? 48 : 72, isTouch ? 48 : 72),
+          new THREE.MeshStandardMaterial({
+            color: 0x10224a, emissive: 0x0b2a58, emissiveIntensity: 0.85,
+            metalness: 0.35, roughness: 0.55
+          })
+        );
+        spin.add(ocean);
+
+        const wire = new THREE.Mesh(
+          new THREE.IcosahedronGeometry(R * 1.01, 2),
+          new THREE.MeshBasicMaterial({
+            color: 0x4aa8d8, transparent: true, opacity: 0.18, wireframe: true
+          })
+        );
+        spin.add(wire);
+
+        const atmos = new THREE.Mesh(
+          new THREE.SphereGeometry(R * 1.09, 48, 48),
+          new THREE.MeshBasicMaterial({
+            color: 0x00adef, transparent: true, opacity: 0.14, side: THREE.BackSide, depthWrite: false
+          })
+        );
+        spin.add(atmos);
+
+        const halo = new THREE.Mesh(
+          new THREE.SphereGeometry(R * 1.2, 48, 48),
+          new THREE.MeshBasicMaterial({
+            color: 0x33c3f3, transparent: true, opacity: 0.07, side: THREE.BackSide, depthWrite: false
+          })
+        );
+        spin.add(halo);
+
+        const latMat = new THREE.LineBasicMaterial({ color: 0x00adef, transparent: true, opacity: 0.16 });
+        [-0.65, -0.3, 0, 0.3, 0.65].forEach((yN) => {
+          const pts = [];
+          const ry = Math.sqrt(Math.max(0.0001, 1 - yN * yN)) * R * 1.004;
+          for (let i = 0; i <= 64; i++) {
+            const a = (i / 64) * Math.PI * 2;
+            pts.push(new THREE.Vector3(Math.cos(a) * ry, yN * R, Math.sin(a) * ry));
+          }
+          spin.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), latMat));
+        });
+
+        const toVec = (lat, lon, r) => {
+          const phi = (90 - lat) * (Math.PI / 180);
+          const theta = (lon + 180) * (Math.PI / 180);
+          return new THREE.Vector3(
+            -r * Math.sin(phi) * Math.cos(theta),
+            r * Math.cos(phi),
+            r * Math.sin(phi) * Math.sin(theta)
+          );
+        };
+
+        // Destinations published on IMEX LCL / network copy
+        const hubs = [
+          { lat: 26.45, lon: 80.33, home: true },   // Kanpur
+          { lat: 25.2, lon: 55.27 },                // Dubai / Jebel Ali
+          { lat: 1.35, lon: 103.82 },               // Singapore
+          { lat: 6.93, lon: 79.85 },                // Colombo
+          { lat: 51.96, lon: 1.35 },                // Felixstowe
+          { lat: 51.22, lon: 4.4 },                 // Antwerp
+          { lat: 51.92, lon: 4.48 },                // Rotterdam
+          { lat: 53.55, lon: 9.99 },                // Hamburg
+          { lat: 43.3, lon: 5.37 },                 // Marseilles
+          { lat: 41.39, lon: 2.17 },                // Barcelona
+          { lat: -29.86, lon: 31.02 },              // Durban
+          { lat: 40.71, lon: -74.01 },              // New York
+          { lat: 33.94, lon: -118.41 }              // Los Angeles
+        ].map((h) => ({ ...h, pos: toVec(h.lat, h.lon, R * 1.01) }));
+
+        const hubGroup = new THREE.Group();
+        spin.add(hubGroup);
+        const hubMat = new THREE.MeshBasicMaterial({ color: 0x00adef });
+        const homeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        hubs.forEach((h) => {
+          const d = new THREE.Mesh(
+            new THREE.SphereGeometry(h.home ? 0.055 : 0.032, 10, 10),
+            h.home ? homeMat : hubMat
+          );
+          d.position.copy(h.pos);
+          hubGroup.add(d);
+          if (h.home) {
+            const ring = new THREE.Mesh(
+              new THREE.RingGeometry(0.08, 0.11, 24),
+              new THREE.MeshBasicMaterial({ color: 0x00adef, transparent: true, opacity: 0.85, side: THREE.DoubleSide })
+            );
+            ring.position.copy(h.pos);
+            ring.lookAt(0, 0, 0);
+            ring.userData.pulse = true;
+            hubGroup.add(ring);
+          }
+        });
+
+        const makeArc = (a, b) => {
+          const mid = a.clone().add(b).multiplyScalar(0.5).normalize().multiplyScalar(R * (1.28 + a.distanceTo(b) * 0.06));
+          return new THREE.QuadraticBezierCurve3(a.clone(), mid, b.clone());
+        };
+        const home = hubs[0].pos;
+        const routes = hubs.slice(1).map((h) => makeArc(home, h.pos));
+        const arcGroup = new THREE.Group();
+        spin.add(arcGroup);
+        routes.forEach((curve, i) => {
+          const tube = new THREE.Mesh(
+            new THREE.TubeGeometry(curve, isTouch ? 28 : 48, i % 2 === 0 ? 0.016 : 0.009, 8, false),
+            new THREE.MeshBasicMaterial({
+              color: 0x00adef, transparent: true, opacity: i % 2 === 0 ? 0.85 : 0.4
+            })
+          );
+          arcGroup.add(tube);
+          const bead = new THREE.Mesh(
+            new THREE.SphereGeometry(0.038, 10, 10),
+            new THREE.MeshBasicMaterial({ color: 0xffffff })
+          );
+          bead.userData.route = { curve, speed: 0.1 + (i % 5) * 0.025, t: Math.random() };
+          arcGroup.add(bead);
+        });
+
+        const starCount = isTouch ? 80 : 160;
+        const starPos = new Float32Array(starCount * 3);
+        for (let i = 0; i < starCount; i++) {
+          const v = new THREE.Vector3().randomDirection().multiplyScalar(5.5 + Math.random() * 3.5);
+          starPos[i * 3] = v.x; starPos[i * 3 + 1] = v.y; starPos[i * 3 + 2] = v.z;
+        }
+        const stars = new THREE.Points(
+          new THREE.BufferGeometry().setAttribute("position", new THREE.BufferAttribute(starPos, 3)),
+          new THREE.PointsMaterial({ color: 0x9fdfff, size: 0.02, sizeAttenuation: true, transparent: true, opacity: 0.65 })
+        );
+        root.add(stars);
+
+        // Face Kanpur / India toward the camera, then axial spin uses local Y
+        const homeDir = hubs[0].pos.clone().normalize();
+        spin.quaternion.setFromUnitVectors(homeDir, new THREE.Vector3(0.18, 0.08, 1).normalize());
+        spin.rotateX(-0.14);
+        spin.userData.useLocalSpin = true;
+
+        camera.position.set(0.1, 0.2, 6.55);
+        camera.lookAt(0, 0, 0);
+
+        /* Homepage: scrub globe as scroll transition into the partners band */
+        if (el.dataset.globeScroll === "1" && !reduce) {
+          const band = el.closest("[data-globe-band]") || el.closest(".globe-band");
+          const frame = el.closest(".globe-frame");
+          const copy = band && band.querySelector(".globe-copy");
+          const camStart = 9.35;
+          const camEnd = 6.55;
+          const scaleStart = 0.42;
+          root.scale.setScalar(scaleStart);
+          camera.position.z = camStart;
+          hubGroup.scale.setScalar(0.15);
+          hubGroup.traverse((o) => { if (o.material && o.material.opacity != null) { o.userData._op = o.material.opacity; o.material.opacity = 0; } });
+          arcGroup.traverse((o) => {
+            if (o.material && o.material.opacity != null) {
+              o.userData._op = o.material.opacity;
+              o.material.opacity = 0;
+            }
+            if (o.userData.route) o.visible = false;
+          });
+          if (stars.material) stars.material.opacity = 0.15;
+          root.userData.scrollSpin = 0;
+
+          const state = { p: 0 };
+          const apply = () => {
+            const p = state.p;
+            const e = p * p * (3 - 2 * p); // smoothstep
+            root.scale.setScalar(scaleStart + (1 - scaleStart) * e);
+            camera.position.z = camStart + (camEnd - camStart) * e;
+            camera.position.y = 0.55 - 0.35 * e;
+            camera.lookAt(0, 0, 0);
+            root.rotation.x = (1 - e) * 0.38;
+            root.rotation.y = (1 - e) * -0.55;
+            hubGroup.scale.setScalar(0.15 + 0.85 * e);
+            hubGroup.traverse((o) => {
+              if (o.material && o.userData._op != null) o.material.opacity = o.userData._op * Math.min(1, e * 1.35);
+            });
+            arcGroup.traverse((o) => {
+              if (o.material && o.userData._op != null) o.material.opacity = o.userData._op * Math.max(0, (e - 0.28) / 0.72);
+              if (o.userData.route) o.visible = e > 0.42;
+            });
+            if (stars.material) stars.material.opacity = 0.15 + 0.5 * e;
+            root.userData.scrollSpin = (1 - e) * 0.012;
+            if (frame) {
+              frame.style.opacity = String(0.35 + 0.65 * e);
+              frame.style.transform = "translate3d(0," + ((1 - e) * 72) + "px,0) rotateY(" + ((1 - e) * -16) + "deg) scale(" + (0.82 + 0.18 * e) + ")";
+            }
+          };
+          apply();
+
+          gsap.to(state, {
+            p: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: band || frame || el,
+              start: "top 92%",
+              end: "center 48%",
+              scrub: 0.7,
+              invalidateOnRefresh: true
+            },
+            onUpdate: apply
+          });
+
+          if (copy) {
+            gsap.fromTo(copy.children, { y: 48, opacity: 0 }, {
+              y: 0,
+              opacity: 1,
+              stagger: 0.1,
+              ease: "none",
+              scrollTrigger: {
+                trigger: band || copy,
+                start: "top 88%",
+                end: "top 42%",
+                scrub: 0.55
+              }
+            });
+          }
+        }
+      }
+      if (kind === "ocean") {
+        const waterG = new THREE.PlaneGeometry(28, 28, isTouch?18:48, isTouch?18:48);
+        const water = new THREE.Mesh(waterG, new THREE.MeshStandardMaterial({ color: 0x123a6b, metalness: 0.7, roughness: 0.25, transparent:true, opacity:0.92 }));
+        water.rotation.x = -Math.PI/2; water.position.y = -1.15; root.add(water);
+        water.userData.wave = true;
+        const ship = new THREE.Group();
+        const hull = new THREE.Mesh(new THREE.BoxGeometry(5.2, 0.7, 1.4), new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness:0.5, roughness:0.4 }));
+        hull.position.y = -0.4; ship.add(hull);
+        const stripe = new THREE.Mesh(new THREE.BoxGeometry(5.2, 0.18, 1.42), new THREE.MeshStandardMaterial({ color: 0x8b1e1e }));
+        stripe.position.y = -0.7; ship.add(stripe);
+        for (let x=-1.6;x<=1.6;x+=0.55){
+          for (let z=-0.35;z<=0.35;z+=0.35){
+            const box = corrugate(0.42, 0.42, 0.85);
+            box.scale.set(0.22,0.22,0.22);
+            box.position.set(x, 0.05, z);
+            ship.add(box);
+          }
+        }
+        root.add(ship);
+        camera.position.set(3.2, 2.4, 8.5);
+      }
+      if (kind === "packages" || kind === "buyer") {
+        for (let i=0;i<8;i++){
+          const p = crate(0.5 + Math.random()*0.25, i%2?0x00adef:0xc8a165);
+          p.position.set((i-3.5)*0.85, Math.sin(i)*0.4, (i%3-1)*0.8);
+          p.userData.base = p.position.clone();
+          root.add(p);
+        }
+      }
+      if (kind === "air") {
+        const plane = new THREE.Group();
+        const fuse = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.22, 3.2, 12), new THREE.MeshStandardMaterial({ color: 0xe8eef6, metalness:0.6, roughness:0.3 }));
+        fuse.rotation.z = Math.PI/2; plane.add(fuse);
+        const wing = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.06, 0.5), new THREE.MeshStandardMaterial({ color: 0x2e3192, metalness:0.5, roughness:0.35 }));
+        plane.add(wing);
+        const tail = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.4, 0.06), new THREE.MeshStandardMaterial({ color: 0x00adef }));
+        tail.position.set(-1.4, 0.22, 0); plane.add(tail);
+        root.add(plane);
+        for (let i=0;i<12;i++){
+          const cloud = new THREE.Mesh(new THREE.SphereGeometry(0.35+Math.random()*0.4, 8, 8), new THREE.MeshStandardMaterial({ color: 0xffffff, transparent:true, opacity:0.18 }));
+          cloud.position.set((Math.random()-0.5)*10, (Math.random()-0.5)*4, (Math.random()-0.5)*8);
+          root.add(cloud);
+        }
+        camera.position.set(1.2, 0.6, 6.2);
+      }
+      if (kind === "scan" || kind === "docs") {
+        const c = corrugate(1.6, 1.6, 3.2); c.position.x = -1.4; root.add(c);
+        for (let i=0;i<6;i++){
+          const paper = new THREE.Mesh(
+            new THREE.BoxGeometry(1.4, 0.02, 1.9),
+            new THREE.MeshStandardMaterial({ color: 0xf4f7fb, roughness: 0.8, metalness: 0.05 })
+          );
+          paper.position.set(1.4, 0.18*i - 0.4, 0);
+          paper.rotation.y = 0.18 + i*0.04;
+          paper.rotation.x = -0.4;
+          root.add(paper);
+        }
+        const beam = new THREE.Mesh(new THREE.PlaneGeometry(3.6, 0.05), new THREE.MeshBasicMaterial({ color: 0x00adef, transparent:true, opacity:0.8 }));
+        beam.rotation.x = -0.2; beam.userData.beam = true; root.add(beam);
+      }
+      if (kind === "quote") {
+        const pack = crate(1.4, 0xc8a165);
+        pack.name = "quotePack";
+        root.add(pack);
+        window.__quotePack = pack;
+      }
+
+      const clock = new THREE.Clock();
+      let raf;
+      const onResize = () => {
+        const w = el.clientWidth, h = el.clientHeight;
+        camera.aspect = w / Math.max(h,1);
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h, false);
+      };
+      window.addEventListener("resize", onResize);
+      const loop = () => {
+        raf = requestAnimationFrame(loop);
+        const t = clock.getElapsedTime();
+        root.rotation.y += (pointer.x * 0.35 - root.rotation.y) * 0.04;
+        root.rotation.x += (-pointer.y * 0.18 - root.rotation.x) * 0.04;
+        root.position.y = Math.sin(t * 0.8) * 0.12;
+        scene.traverse((o) => {
+          if (o.userData.wave && o.geometry.attributes.position) {
+            const pos = o.geometry.attributes.position;
+            for (let i=0;i<pos.count;i++){
+              const x = pos.getX(i), y = pos.getY(i);
+              pos.setZ(i, Math.sin(x*0.45 + t*1.4)*0.12 + Math.cos(y*0.4 + t)*0.08);
+            }
+            pos.needsUpdate = true; o.geometry.computeVertexNormals();
+          }
+          if (o.userData.beam) o.position.y = Math.sin(t*1.6)*1.1;
+          if (o.userData.base) o.position.y = o.userData.base.y + Math.sin(t + o.position.x)*0.18;
+        });
+        if (kind === "globe") {
+          const spin = root.userData.globeSpin;
+          const boost = root.userData.scrollSpin || 0;
+          if (spin) {
+            const step = 0.0018 + boost;
+            if (spin.userData.useLocalSpin) spin.rotateY(step);
+            else spin.rotation.y += step;
+          }
+          root.traverse((o) => {
+            if (o.userData.route) {
+              const r = o.userData.route;
+              r.t = (r.t + r.speed * 0.016) % 1;
+              o.position.copy(r.curve.getPointAt(r.t));
+            }
+            if (o.userData.pulse) {
+              const s = 1 + Math.sin(t * 2.2) * 0.18;
+              o.scale.set(s, s, s);
+              if (o.material) o.material.opacity = 0.45 + Math.sin(t * 2.2) * 0.35;
+            }
+          });
+        }
+        renderer.render(scene, camera);
+      };
+      if (!reduce) loop(); else renderer.render(scene, camera);
+      const rec = { renderer, scene, camera, root, el, raf, onMove, onResize };
+      scenes.push(rec);
+      const io = new IntersectionObserver((ents) => {
+        ents.forEach((en) => {
+          if (!en.isIntersecting && rec.raf) { cancelAnimationFrame(rec.raf); rec.raf = 0; }
+          else if (en.isIntersecting && !rec.raf && !reduce) loop();
+        });
+      }, { threshold: 0.05 });
+      io.observe(el);
+    } catch (err) {
+      document.body.classList.add("no-webgl");
+    }
+  }
+
+  const start3d = () => {
+    if (canvas && canvas.dataset.scene) bootScene(canvas, canvas.dataset.scene || page);
+    document.querySelectorAll("canvas[data-scene]").forEach((el) => {
+      if (el.id === "scene" || el.id === "heroFrames") return;
+      bootScene(el, el.dataset.scene);
+    });
+  };
+  requestAnimationFrame(() => requestAnimationFrame(start3d));
+
+  window.addEventListener("pagehide", () => {
+    scenes.forEach((s) => {
+      cancelAnimationFrame(s.raf);
+      window.removeEventListener("pointermove", s.onMove);
+      window.removeEventListener("resize", s.onResize);
+      disposeScene(s.scene);
+      s.renderer.dispose();
+    });
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+    if (lenis) lenis.destroy();
+  });
+
+  /* Quote package scale */
+  const h = document.getElementById("height");
+  const w = document.getElementById("width");
+  const d = document.getElementById("depth");
+  function updatePack(){
+    const pack = window.__quotePack;
+    if (!pack) return;
+    const hv = Math.max(10, Number(h && h.value) || 40);
+    const wv = Math.max(10, Number(w && w.value) || 40);
+    const dv = Math.max(10, Number(d && d.value) || 40);
+    gsap.to(pack.scale, { x: wv/40, y: hv/40, z: dv/40, duration: 0.45 });
+  }
+  [h,w,d].forEach((el) => el && el.addEventListener("input", updatePack));
+
+  /* Quote form */
+  const form = document.getElementById("quoteForm");
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      let ok = true;
+      form.querySelectorAll("[required]").forEach((inp) => {
+        const wrap = inp.closest(".field");
+        const valid = inp.value.trim() && (inp.type !== "email" || /.+@.+\..+/.test(inp.value));
+        wrap?.classList.toggle("error", !valid);
+        if (!valid) ok = false;
+      });
+      if (!ok) {
+        document.getElementById("formStatus").textContent = "Please complete the required fields.";
+        return;
+      }
+      const data = new FormData(form);
+      const lines = [];
+      data.forEach((v,k) => lines.push(k + ": " + v));
+      const mailto = "mailto:sayyam7@imexclearing.com?subject=" + encodeURIComponent("IMEX quote request") + "&body=" + encodeURIComponent(lines.join("\n"));
+      document.getElementById("formStatus").textContent = "Opening your email client to send this enquiry to IMEX. No quote is generated on this page.";
+      window.location.href = mailto;
+    });
+  }
+
+  /* 1994 story band */
+  (function storyBand(){
+    const band = document.querySelector("[data-story-band]");
+    if (!band) return;
+    const copy = band.querySelector(".story-copy");
+    const visual = band.querySelector(".story-visual");
+    const year = band.querySelector(".story-year");
+    const truck = band.querySelector(".story-truck");
+    const yard = band.querySelector(".story-yard");
+    const mmS = gsap.matchMedia();
+    mmS.add("(prefers-reduced-motion: no-preference)", () => {
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+        scrollTrigger: { trigger: band, start: "top 88%", once: true }
+      });
+      tl.from(year, { y: 28, opacity: 0, duration: 0.7 })
+        .from(band.querySelector(".story-title"), { y: 32, opacity: 0, duration: 0.75 }, "-=0.4")
+        .from(band.querySelector(".story-rule"), { scaleX: 0, transformOrigin: "left center", duration: 0.45 }, "-=0.35")
+        .from(band.querySelectorAll(".story-copy .lede"), { y: 18, opacity: 0, stagger: 0.08, duration: 0.55 }, "-=0.25")
+        .from(band.querySelectorAll(".story-actions > *"), { y: 16, opacity: 0, stagger: 0.07, duration: 0.45 }, "-=0.28")
+        .from(yard, { scale: 1.08, opacity: 0, duration: 0.9 }, 0)
+        .from(truck, { x: 56, opacity: 0, duration: 0.9 }, 0.18)
+        .from(band.querySelectorAll(".story-pill"), { y: 20, opacity: 0, scale: 0.94, stagger: 0.08, duration: 0.5 }, 0.45)
+        .from(band.querySelector(".story-corner"), { opacity: 0, duration: 0.5 }, 0.5);
+
+      if (copy) {
+        gsap.fromTo(copy, { y: 90 }, {
+          y: -36,
+          ease: "none",
+          scrollTrigger: { trigger: band, start: "top bottom", end: "bottom top", scrub: 1.05 }
+        });
+      }
+      if (visual) {
+        gsap.fromTo(visual, { y: 48 }, {
+          y: -72,
+          ease: "none",
+          scrollTrigger: { trigger: band, start: "top bottom", end: "bottom top", scrub: 1.2 }
+        });
+      }
+    });
+    mmS.add("(prefers-reduced-motion: reduce)", () => {
+      gsap.from(band, { opacity: 0, duration: 0.2, ease: "none", scrollTrigger: { trigger: band, start: "top 85%", once: true } });
+    });
+  })();
+
+  /* Enquiry band */
+  (function quoteBand(){
+    const band = document.querySelector("[data-quote-band]");
+    if (!band) return;
+    const courier = band.querySelector(".qb-courier");
+    const path = band.querySelector(".qb-dash");
+    const plane = band.querySelector(".qb-plane");
+    if (courier) gsap.set(courier, { xPercent: -50 });
+
+    const mmQ = gsap.matchMedia();
+    mmQ.add("(prefers-reduced-motion: no-preference)", () => {
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+        scrollTrigger: { trigger: band, start: "top 78%", once: true }
+      });
+      tl.from(band.querySelector(".qb-kicker"), { y: 20, opacity: 0, duration: 0.55 })
+        .from(band.querySelector(".qb-title"), { y: 36, opacity: 0, duration: 0.8 }, "-=0.32")
+        .from(band.querySelector(".qb-lede"), { y: 18, opacity: 0, duration: 0.55 }, "-=0.45")
+        .from(band.querySelector(".qb-cta"), { y: 16, opacity: 0, scale: 0.94, duration: 0.45 }, "-=0.32")
+        .from(band.querySelector(".qb-flight"), { opacity: 0, duration: 0.6, ease: "none" }, "-=0.2")
+        .fromTo(band.querySelector(".qb-frame"), { x: 48, opacity: 0, rotation: -8 }, { x: 0, opacity: 1, rotation: -14, duration: 0.9 }, 0.12)
+        .fromTo(courier, { y: 36, opacity: 0, scale: 0.96, xPercent: -50 }, { y: 0, opacity: 1, scale: 1, xPercent: -50, duration: 0.85 }, 0.22)
+        .from(band.querySelectorAll(".qb-chip"), { scale: 0.92, opacity: 0, stagger: 0.07, duration: 0.45 }, 0.48)
+        .from(band.querySelector(".qb-globe"), { opacity: 0, y: 24, duration: 0.9 }, 0.18)
+        .from(band.querySelector(".qb-orbit"), { opacity: 0, duration: 0.6 }, 0.4);
+
+      gsap.to(band.querySelector(".qb-orbit"), { rotation: 360, duration: 22, repeat: -1, ease: "none", transformOrigin: "50% 52%" });
+      gsap.to(band.querySelector(".qb-chip-box"), { y: -10, duration: 2.6, yoyo: true, repeat: -1, ease: "sine.inOut" });
+      gsap.to(band.querySelector(".qb-chip-pin"), { y: 10, duration: 3.1, yoyo: true, repeat: -1, ease: "sine.inOut" });
+      gsap.to(band.querySelector(".qb-blob-a"), { x: 18, y: -12, duration: 8, yoyo: true, repeat: -1, ease: "sine.inOut" });
+      gsap.to(band.querySelector(".qb-blob-b"), { x: -14, y: 16, duration: 10, yoyo: true, repeat: -1, ease: "sine.inOut" });
+      gsap.to(band.querySelector(".qb-globe-spin"), { rotation: 360, duration: 80, repeat: -1, ease: "none", transformOrigin: "260px 300px" });
+      gsap.to(courier, { y: -8, duration: 3.4, yoyo: true, repeat: -1, ease: "sine.inOut" });
+
+      if (path && plane) {
+        const len = path.getTotalLength();
+        const fly = { p: 0 };
+        const place = () => {
+          const d = fly.p * len;
+          const a = path.getPointAtLength(d);
+          const b = path.getPointAtLength(Math.min(len, d + 2));
+          gsap.set(plane, { x: a.x, y: a.y, rotation: Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI, transformOrigin: "4px 2px" });
+        };
+        place();
+        gsap.to(fly, { p: 1, duration: 7.2, repeat: -1, ease: "none", onUpdate: place });
+      }
+    });
+    mmQ.add("(prefers-reduced-motion: reduce)", () => {
+      gsap.from([band.querySelector(".qb-copy"), band.querySelector(".qb-visual")], {
+        opacity: 0, duration: 0.2, ease: "none",
+        scrollTrigger: { trigger: band, start: "top 85%", once: true }
+      });
+    });
+  })();
+
+  /* Kanpur desk */
+  (function touchBand(){
+    const band = document.querySelector("[data-touch-band]");
+    if (!band) return;
+    const mmT = gsap.matchMedia();
+    mmT.add("(prefers-reduced-motion: no-preference)", () => {
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+        scrollTrigger: { trigger: band, start: "top 78%", once: true }
+      });
+      tl.from(band.querySelector(".touch-kicker"), { y: 16, opacity: 0, duration: 0.45 })
+        .from(band.querySelector(".touch-title"), { y: 28, opacity: 0, duration: 0.7 }, "-=0.22")
+        .from(band.querySelector(".touch-addr"), { y: 16, opacity: 0, duration: 0.5 }, "-=0.4")
+        .from(band.querySelector(".touch-copy .btn"), { y: 12, opacity: 0, duration: 0.4 }, "-=0.28")
+        .from(band.querySelector(".touch-plate"), { y: 36, opacity: 0, duration: 0.8 }, 0.1)
+        .from(band.querySelector(".touch-map"), { scale: 1.08, duration: 1.1 }, 0.12)
+        .from(band.querySelector(".touch-pin"), { scale: 0, duration: 0.45, ease: "back.out(1.6)" }, 0.45)
+        .from(band.querySelectorAll(".touch-lines a"), { y: 12, opacity: 0, stagger: 0.07, duration: 0.45 }, 0.4)
+        .from(band.querySelectorAll(".touch-desks a"), { y: 8, opacity: 0, stagger: 0.06, duration: 0.35 }, 0.55);
+      gsap.to(band.querySelector(".touch-pin"), {
+        scale: 1.12, duration: 1.8, yoyo: true, repeat: -1, ease: "sine.inOut"
+      });
+    });
+  })();
+
+  /* Footer horizon */
+  (function footBand(){
+    const foot = document.querySelector(".site-foot");
+    const line = foot && foot.querySelector(".foot-horizon");
+    if (!foot || !line || reduce) return;
+    gsap.fromTo(line, { scaleX: 0 }, {
+      scaleX: 1, ease: "none",
+      scrollTrigger: { trigger: foot, start: "top 96%", end: "top 72%", scrub: true }
+    });
+  })();
+
+  /* VAS reference desk */
+  (function vasBand(){
+    const band = document.querySelector("[data-vas-band]");
+    if (!band) return;
+    const links = [...band.querySelectorAll("[data-vas-i]")];
+    const imgs = [...band.querySelectorAll("[data-vas-img]")];
+    const setActive = (i) => {
+      links.forEach((a) => a.classList.toggle("is-on", a.dataset.vasI === String(i)));
+      imgs.forEach((img) => img.classList.toggle("is-on", img.dataset.vasImg === String(i)));
+    };
+    links.forEach((a) => {
+      const activate = () => setActive(a.dataset.vasI);
+      a.addEventListener("pointerenter", activate);
+      a.addEventListener("focus", activate);
+    });
+    if (reduce) return;
+    gsap.from(band.querySelector(".vas-kicker"), {
+      y: 16, opacity: 0, duration: 0.4, ease: "power3.out",
+      scrollTrigger: { trigger: band, start: "top 78%", once: true }
+    });
+    gsap.from(band.querySelector(".vas-title"), {
+      y: 28, opacity: 0, duration: 0.7, ease: "power3.out",
+      scrollTrigger: { trigger: band, start: "top 78%", once: true }
+    });
+    gsap.from(band.querySelector(".vas-lede"), {
+      y: 16, opacity: 0, duration: 0.5, delay: 0.08, ease: "power3.out",
+      scrollTrigger: { trigger: band, start: "top 78%", once: true }
+    });
+    gsap.from(band.querySelector(".vas-copy .btn"), {
+      y: 14, opacity: 0, duration: 0.45, delay: 0.14, ease: "power3.out",
+      scrollTrigger: { trigger: band, start: "top 78%", once: true }
+    });
+    gsap.from(band.querySelector(".vas-stage"), {
+      y: 36, opacity: 0, duration: 0.8, ease: "power3.out",
+      scrollTrigger: { trigger: band, start: "top 78%", once: true }
+    });
+    gsap.from(links, {
+      y: 16, opacity: 0, stagger: 0.08, duration: 0.45, delay: 0.2, ease: "power3.out",
+      scrollTrigger: { trigger: band, start: "top 78%", once: true }
+    });
+  })();
+
+  /* Track band */
+  (function trackBand(){
+    const band = document.querySelector("[data-track-band]");
+    if (!band || reduce) return;
+    const live = band.querySelector(".track-route-live");
+    const plane = band.querySelector(".track-plane");
+    const pulses = band.querySelectorAll(".track-pulse");
+    const pathLen = live ? (live.getTotalLength ? live.getTotalLength() : 420) : 420;
+    if (live) gsap.set(live, { strokeDasharray: pathLen, strokeDashoffset: pathLen });
+    const tl = gsap.timeline({
+      defaults: { ease: "power3.out" },
+      scrollTrigger: { trigger: band, start: "top 78%", once: true }
+    });
+    tl.from(band.querySelector(".track-kicker"), { y: 16, opacity: 0, duration: 0.4 })
+      .from(band.querySelector(".track-title"), { y: 28, opacity: 0, duration: 0.7 }, "-=0.2")
+      .from(band.querySelector(".track-lede"), { y: 16, opacity: 0, duration: 0.45 }, "-=0.4")
+      .from(band.querySelector(".track-console"), { y: 22, opacity: 0, duration: 0.55 }, "-=0.3")
+      .from(band.querySelector(".track-radar"), { y: 30, opacity: 0, duration: 0.7 }, 0.12)
+      .from(band.querySelectorAll(".track-stops span"), { y: 12, opacity: 0, stagger: 0.08, duration: 0.4 }, 0.45);
+    if (live) {
+      tl.to(live, { strokeDashoffset: 0, duration: 1.6, ease: "power2.inOut" }, 0.35);
+    }
+    if (plane) {
+      gsap.set(plane, { x: -202, y: 160, rotation: -28, transformOrigin: "12px 4px" });
+      tl.to(plane, { x: 0, y: 0, rotation: -18, duration: 0.9, ease: "power2.inOut" }, 0.45)
+        .to(plane, { x: 280, y: -100, rotation: -12, duration: 0.9, ease: "power2.inOut" }, 0.95);
+    }
+    if (pulses.length) {
+      gsap.to(pulses, {
+        scale: 1.08, opacity: 0.35, duration: 2.4, stagger: 0.25,
+        yoyo: true, repeat: -1, ease: "sine.inOut"
+      });
+    }
+  })();
+
+  /* Tracking */
+  const track = document.getElementById("trackForm");
+  if (track) {
+    track.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const n = (document.getElementById("awb")?.value || "").trim();
+      const url = "https://www.track-trace.com/";
+      window.open(url, "_blank", "noopener");
+      const note = document.getElementById("trackNote");
+      if (note) note.textContent = n
+        ? "Continue on Track & Trace with number " + n + ". IMEX uses the original Track & Trace destination."
+        : "Continue on the original Track & Trace destination.";
+    });
+  }
+
+  /* Hero intro — waits for boot loader */
+  whenBooted.then(() => {
+    if (reduce || !document.querySelector(".hero")) {
+      ScrollTrigger.refresh();
+      return;
+    }
+    const tl = gsap.timeline({ defaults:{ ease:"power3.out" }, onComplete: () => ScrollTrigger.refresh() });
+    tl.fromTo(".intro-line", { width:0 }, { width:"100%", duration:1.1 })
+      .to(".intro-line", { autoAlpha: 0, duration: 0.45 }, "+=0.15");
+    if (document.querySelector(".hero-film")) {
+      tl.from(".hero-film .hero-lead", { y:16, opacity:0, duration:0.5 }, "-=0.4")
+        .from(".hero-film .hero-line > span", { yPercent:110, opacity:0, stagger:0.1, duration:0.85 }, "-=0.2")
+        .from(".hero-film .hero-sub", { y:18, opacity:0, duration:0.55 }, "-=0.45")
+        .from(".hero-film .hero-aside, .hero-film .hero-actions", { y:20, opacity:0, stagger:0.08, duration:0.6 }, "-=0.35");
+    } else {
+      tl.from(".hero-copy .kicker", { y:20, opacity:0, duration:0.5 }, "-=0.4")
+        .from(".hero h1 span", { yPercent:110, opacity:0, stagger:0.03, duration:0.9 }, "-=0.2")
+        .from(".hero .lede, .hero-actions", { y:24, opacity:0, stagger:0.08, duration:0.7 }, "-=0.45");
+    }
+  });
+})();
+
+</script>
+</body>
+</html>
